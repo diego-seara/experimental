@@ -1,0 +1,168 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/pages/splash.html"
+    },
+    {
+      "source": "/splash",
+      "destination": "/pages/splash.html"
+    },
+    {
+      "source": "/acceso",
+      "destination": "/pages/acceso.html"
+    },
+    {
+      "source": "/inicio",
+      "destination": "/pages/inicio.html"
+    },
+    {
+      "source": "/mi-dinero",
+      "destination": "/pages/mi-dinero.html"
+    },
+    {
+      "source": "/productos",
+      "destination": "/pages/productos.html"
+    },
+    {
+      "source": "/contratar",
+      "destination": "/pages/contratar.html"
+    },
+    {
+      "source": "/operar",
+      "destination": "/pages/operar.html"
+    },
+    {
+      "source": "/perfil",
+      "destination": "/pages/perfil.html"
+    },
+    {
+      "source": "/ayuda",
+      "destination": "/pages/ayuda.html"
+    },
+    {
+      "source": "/buzon",
+      "destination": "/pages/buzon.html"
+    },
+    {
+      "source": "/buzon/mensaje",
+      "destination": "/pages/buzon-mensaje.html"
+    },
+    {
+      "source": "/prevision",
+      "destination": "/pages/prevision.html"
+    },
+    {
+      "source": "/notificaciones",
+      "destination": "/pages/notificaciones.html"
+    },
+    {
+      "source": "/cuentas/online",
+      "destination": "/pages/cuentas-online.html"
+    },
+    {
+      "source": "/cuentas/ahorro",
+      "destination": "/pages/cuentas-ahorro.html"
+    },
+    {
+      "source": "/tarjetas/debito",
+      "destination": "/pages/tarjetas-debito.html"
+    },
+    {
+      "source": "/contratar/cuenta",
+      "destination": "/pages/contratar-cuenta.html"
+    },
+    {
+      "source": "/contratar/tarjeta",
+      "destination": "/pages/contratar-tarjeta.html"
+    },
+    {
+      "source": "/contratar/ahorro",
+      "destination": "/pages/contratar-ahorro.html"
+    },
+    {
+      "source": "/contratar/solicitud-recibida",
+      "destination": "/pages/contratar-solicitud-recibida.html"
+    },
+    {
+      "source": "/conversacion/saldo",
+      "destination": "/pages/conversacion-saldo.html"
+    },
+    {
+      "source": "/conversacion/pagos",
+      "destination": "/pages/conversacion-pagos.html"
+    },
+    {
+      "source": "/conversacion/gasto",
+      "destination": "/pages/conversacion-gasto.html"
+    },
+    {
+      "source": "/conversacion/tarjetas",
+      "destination": "/pages/conversacion-tarjetas.html"
+    },
+    {
+      "source": "/conversacion/ayuda",
+      "destination": "/pages/conversacion-ayuda.html"
+    },
+    {
+      "source": "/bizum/datos",
+      "destination": "/pages/bizum-datos.html"
+    },
+    {
+      "source": "/bizum/revision",
+      "destination": "/pages/bizum-revision.html"
+    },
+    {
+      "source": "/bizum/completado",
+      "destination": "/pages/bizum-completado.html"
+    },
+    {
+      "source": "/transferencia/datos",
+      "destination": "/pages/transferencia-datos.html"
+    },
+    {
+      "source": "/transferencia/revision",
+      "destination": "/pages/transferencia-revision.html"
+    },
+    {
+      "source": "/transferencia/completada",
+      "destination": "/pages/transferencia-completada.html"
+    },
+    {
+      "source": "/recibos/cubrir",
+      "destination": "/pages/recibos-cubrir.html"
+    },
+    {
+      "source": "/recibos/completado",
+      "destination": "/pages/recibos-completado.html"
+    },
+    {
+      "source": "/seguridad/revisar",
+      "destination": "/pages/seguridad-revisar.html"
+    },
+    {
+      "source": "/seguridad/tarjeta-bloqueada",
+      "destination": "/pages/seguridad-tarjeta-bloqueada.html"
+    },
+    {
+      "source": "/seguridad/pago-reconocido",
+      "destination": "/pages/seguridad-pago-reconocido.html"
+    },
+    {
+      "source": "/research",
+      "destination": "/research.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    }
+  ]
+}
