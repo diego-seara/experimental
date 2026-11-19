@@ -1,4 +1,4 @@
-# Sabadell · Research no moderado · V7.5 (UserZoom)
+# Sabadell · Research no moderado · V7.6 (UserZoom)
 
 ## Publicación en Vercel
 
@@ -25,7 +25,11 @@ Este directorio es una web estática. Se puede importar como proyecto y desplega
 /conversacion/saldo     /conversacion/pagos          /conversacion/gasto
 /conversacion/tarjetas  /conversacion/ayuda          /bizum/datos
 /conversacion/seguridad /conversacion/recibo         /conversacion/fin-de-mes
-/conversacion/persona
+/conversacion/persona   /conversacion/hipoteca       /conversacion/prestamo
+/conversacion/preaprobado
+/hipoteca               /hipoteca/amortizar          /hipoteca/amortizar/revision
+/hipoteca/amortizacion-programada
+/prestamo               /prestamo/revision           /prestamo/contratado
 /bizum/revision         /bizum/completado            /transferencia/datos
 /transferencia/revision /transferencia/completada   /recibos/cubrir
 /recibos/completado     /seguridad/revisar           /seguridad/tarjeta-bloqueada
@@ -121,3 +125,37 @@ Capa visual nueva al final de `assets/app.css` (todo lo anterior intacto), sacad
   botones secundarios apilados, una por línea.
 - **Botones** de 48 px y 16/24 SemiBold; campos de 48 px con radio 8; resúmenes en panel gris claro.
 - Los tokens del kit no vienen en el código exportado: los valores salen de los literales de las pantallas de Figma.
+
+
+## Cambios V7.6 · Hipoteca, préstamo preaprobado y guiones
+
+### Productos
+- Nueva sección **Préstamos e hipotecas** en Productos: la hipoteca y el préstamo preaprobado (marcado como «Preaprobado», con
+  borde discontinuo para que no se confunda con lo contratado y un enlace «¿Por qué veo esto?»). En Contratar también aparece.
+- Cifras de una sola fuente (`mortgage()`, `loanSim()`): hipoteca de 180.000 € a 30 años al 2,45 % fijo, firmada en agosto de
+  2018. Lleva 104 cuotas, quedan 256 (cuota 706,55 €, pendiente 140.760,04 €, última cuota en marzo de 2048).
+  Préstamo preaprobado: hasta 12.000 € al 6,95 % TIN (7,18 % TAE calculada), sin comisiones, válido hasta el 31 de diciembre.
+
+### Páginas nuevas
+| Ruta | Qué es |
+| --- | --- |
+| `/hipoteca` | Detalle: pendiente con barra de progreso, cuota, tipo, plazo, últimas cuotas y accesos al simulador y al asistente |
+| `/hipoteca/amortizar` | Simulador en vivo: importe (desde la Cuenta Online), reducir cuota o plazo, intereses ahorrados, compensación del 2 %, comparación con la otra opción y aviso si te quedas sin colchón |
+| `/hipoteca/amortizar/revision` → `/hipoteca/amortizacion-programada` | Revisión y confirmación; la hipoteca muestra después la amortización programada |
+| `/prestamo` | Oferta con simulador en vivo (importe y plazo), TIN/TAE, coste total, peso de la cuota sobre la nómina y **alternativas que no son nuestras** (usar el ahorro, esperar y ahorrar); «No me interesa» oculta la oferta |
+| `/prestamo/revision` → `/prestamo/contratado` | Resumen, casilla de información precontractual obligatoria, 14 días de desistimiento; el dinero llega a la Cuenta Online y el préstamo pasa a Productos y Movimientos |
+
+### Guiones del chat
+Conversaciones de varios pasos con respuestas sugeridas, un indicador de «escribiendo» y datos reales en cada respuesta.
+Cada paso queda en la URL como `?paso=` (con `history.replaceState`, sin recargar). También se puede escribir: entiende
+importes («6.000», «20 mil»), plazos («a 48 meses»), palabras clave de las opciones y, si es otra cosa, sale hacia la intención
+que toque; si no entiende, lo dice y mantiene las opciones.
+
+| Guion | Se activa con | Pasos |
+| --- | --- | --- |
+| Hipoteca (`/conversacion/hipoteca`) | «¿Cómo va mi hipoteca?», «¿me conviene amortizar?», «¿me afecta el Euríbor?», «quiero pagar menos cuota», «¿cuánto llevo pagado?» | `overview`, `amort` (compara cuota/plazo y avisa del colchón), `ask-amount`, `pick`, `invest`, `euribor`, `lower`, `extend` (pasa a gestor), `paid` |
+| Préstamo (`/conversacion/prestamo`) | «Necesito 6.000 € para un coche», «quiero un préstamo», «Tengo dudas» en la oferta | `intro`, `ask-purpose`, `ask-amount`, `emergency` (primero el ahorro), `too-much` (más de 12.000 €), `compare` (36/60/84 meses), `chosen` (peso sobre la nómina), `think`, `have`, `early` |
+| Preaprobado (`/conversacion/preaprobado`) | «¿Por qué veo esto?» en Productos, «¿por qué tengo un préstamo preaprobado?» | `why` (de dónde sale, sin consultas nuevas), `commit`, `dismiss` (oculta la oferta) |
+
+Criterios: explorar no genera contacto comercial, la oferta se puede descartar, siempre hay salida a una persona y las
+alternativas se muestran aunque no sean un producto del banco.

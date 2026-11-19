@@ -122,6 +122,46 @@
       "destination": "/pages/conversacion-persona.html"
     },
     {
+      "source": "/hipoteca",
+      "destination": "/pages/hipoteca.html"
+    },
+    {
+      "source": "/hipoteca/amortizar",
+      "destination": "/pages/hipoteca-amortizar.html"
+    },
+    {
+      "source": "/hipoteca/amortizar/revision",
+      "destination": "/pages/hipoteca-amortizar-revision.html"
+    },
+    {
+      "source": "/hipoteca/amortizacion-programada",
+      "destination": "/pages/hipoteca-amortizacion-programada.html"
+    },
+    {
+      "source": "/prestamo",
+      "destination": "/pages/prestamo.html"
+    },
+    {
+      "source": "/prestamo/revision",
+      "destination": "/pages/prestamo-revision.html"
+    },
+    {
+      "source": "/prestamo/contratado",
+      "destination": "/pages/prestamo-contratado.html"
+    },
+    {
+      "source": "/conversacion/hipoteca",
+      "destination": "/pages/conversacion-hipoteca.html"
+    },
+    {
+      "source": "/conversacion/prestamo",
+      "destination": "/pages/conversacion-prestamo.html"
+    },
+    {
+      "source": "/conversacion/preaprobado",
+      "destination": "/pages/conversacion-preaprobado.html"
+    },
+    {
       "source": "/bizum/datos",
       "destination": "/pages/bizum-datos.html"
     },
