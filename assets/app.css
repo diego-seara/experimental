@@ -401,14 +401,30 @@ html:active-view-transition-type(forward)::view-transition-new(vt-screen){animat
 html:active-view-transition-type(forward)::view-transition-old(vt-screen){animation-name:vt-out-left}
 html:active-view-transition-type(back)::view-transition-new(vt-screen){animation-name:vt-in-left}
 html:active-view-transition-type(back)::view-transition-old(vt-screen){animation-name:vt-out-right;z-index:1}
-html:active-view-transition-type(tab)::view-transition-old(vt-screen){animation:vt-fade-out .14s ease-out both}
+html:active-view-transition-type(tab)::view-transition-old(vt-screen){animation:vt-fade-out .18s ease-out both}
 html:active-view-transition-type(tab)::view-transition-new(vt-screen){animation:vt-fade-in .2s ease-out both}
 html:active-view-transition-type(fade)::view-transition-old(*),html:active-view-transition-type(fade)::view-transition-new(*){animation-duration:.32s;animation-timing-function:ease}
 /* La pantalla se desplaza y a la vez se recorta en sentido contrario: nunca asoma fuera del marco del móvil. */
 @keyframes vt-in-right{from{transform:translateX(100%);clip-path:inset(0 100% 0 0)}to{transform:none;clip-path:inset(0)}}
-@keyframes vt-out-left{from{transform:none;clip-path:inset(0);filter:brightness(1)}to{transform:translateX(-28%);clip-path:inset(0 0 0 28%);filter:brightness(.9)}}
-@keyframes vt-in-left{from{transform:translateX(-28%);clip-path:inset(0 0 0 28%);filter:brightness(.9)}to{transform:none;clip-path:inset(0);filter:brightness(1)}}
+@keyframes vt-out-left{from{transform:none;clip-path:inset(0);filter:brightness(1);opacity:1}to{transform:translateX(-30%);clip-path:inset(0 0 0 30%);filter:brightness(.82);opacity:.75}}
+@keyframes vt-in-left{from{transform:translateX(-30%);clip-path:inset(0 0 0 30%);filter:brightness(.82);opacity:.75}to{transform:none;clip-path:inset(0);filter:brightness(1)}}
 @keyframes vt-out-right{from{transform:none;clip-path:inset(0)}to{transform:translateX(100%);clip-path:inset(0 100% 0 0)}}
 @keyframes vt-fade-out{to{opacity:0}}
 @keyframes vt-fade-in{from{opacity:0}}
 @media(prefers-reduced-motion:reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}
+
+/* V7.4 · Transición de salida y entrada sin View Transitions (Firefox, Safari < 18.2): se mueve la pantalla, no la navegación inferior. */
+.route-enter{animation:none}
+.vt-manual-exit-forward>:not(.bottomnav){animation:vtm-out-left .17s ease-in both}
+.vt-manual-exit-back>:not(.bottomnav){animation:vtm-out-right .17s ease-in both}
+.vt-manual-exit-tab>:not(.bottomnav),.vt-manual-exit-fade>:not(.bottomnav){animation:vtm-fade-out .15s ease-in both}
+.vt-manual-enter-forward>:not(.bottomnav){animation:vtm-in-right .3s cubic-bezier(.22,.8,.24,1) both}
+.vt-manual-enter-back>:not(.bottomnav){animation:vtm-in-left .3s cubic-bezier(.22,.8,.24,1) both}
+.vt-manual-enter-tab>:not(.bottomnav),.vt-manual-enter-fade>:not(.bottomnav){animation:vtm-fade-in .2s ease-out both}
+@keyframes vtm-out-left{to{transform:translateX(-22%);opacity:0}}
+@keyframes vtm-out-right{to{transform:translateX(22%);opacity:0}}
+@keyframes vtm-in-right{from{transform:translateX(22%);opacity:0}}
+@keyframes vtm-in-left{from{transform:translateX(-22%);opacity:0}}
+@keyframes vtm-fade-out{to{opacity:0}}
+@keyframes vtm-fade-in{from{opacity:0}}
+@media(prefers-reduced-motion:reduce){[class*="vt-manual-"]>*{animation:none!important}}

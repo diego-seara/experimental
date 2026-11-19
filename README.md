@@ -1,4 +1,4 @@
-# Sabadell · Research no moderado · V7.3 (UserZoom)
+# Sabadell · Research no moderado · V7.4 (UserZoom)
 
 ## Publicación en Vercel
 
@@ -93,3 +93,12 @@ Las pestañas principales limpian `via`. En UserZoom, usar el patrón de URL de 
 - **Arranque** (splash → acceso → inicio): fundido.
 - Barra de estado, indicador de inicio y navegación inferior no se mueven; la pantalla se recorta al marco del móvil.
 - Requiere Chrome/Edge 126+ o Safari 18.2+. En otros navegadores se navega igual que en V7.2. `prefers-reduced-motion` las desactiva.
+
+
+## Cambios V7.4 · Atrás y salida
+
+- **«Atrás» vuelve a la pantalla de origen**, no a una fija: si entraste en la cuenta desde el inicio, vuelves al inicio; si la abriste desde Productos, a Productos; una conversación vuelve a la anterior con su texto.
+- Desde una **pantalla final** (Bizum enviado, transferencia realizada, traspaso, tarjeta bloqueada, pago reconocido, solicitud recibida) vuelve a donde empezó el flujo, sin pasar por la revisión ni permitir repetir la operación.
+- Las pestañas principales (Inicio, Mi dinero, Productos, Contratar…) reinician el recorrido. El botón atrás del navegador sigue funcionando y mantiene el recorrido sincronizado.
+- **Transición de salida** más visible: la pantalla que se va se desplaza, se oscurece y pierde opacidad.
+- **Sin View Transitions** (Firefox, Safari < 18.2): la pantalla sale animada antes de navegar (170 ms) y la nueva entra animada, en la dirección correcta.

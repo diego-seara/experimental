@@ -185,7 +185,7 @@ let saved={};
 try {saved=JSON.parse(sessionStorage.getItem(RS_KEY)||'{}')||{};}catch(err){saved={};}
 if(!saved.form||typeof saved.form!=='object')saved.form={};
 const defaultForm={recipient:'',iban:'',amount:'',concept:''};
-const baseState={via:'',history:[],screen:'home',topic:'',text:'',query:'',chatText:'',balanceVisible:true,stage:'form',form:{...defaultForm},formError:'',toast:'',detail:'account',contract:'cuenta',priorScreen:'home',insight:'ok',scenario:'ok',coverDone:false,blockDone:false,mailRead:false,mailOpen:false};
+const baseState={via:'',history:[],trail:[],screen:'home',topic:'',text:'',query:'',chatText:'',balanceVisible:true,stage:'form',form:{...defaultForm},formError:'',toast:'',detail:'account',contract:'cuenta',priorScreen:'home',insight:'ok',scenario:'ok',coverDone:false,blockDone:false,mailRead:false,mailOpen:false};
 if(ROUTE_PATH==='/'||ROUTE_PATH==='/splash'){
   saved={};
   try {sessionStorage.removeItem(RS_KEY);}catch(err){}
@@ -201,6 +201,7 @@ if(!state.scenario)state.scenario=requestedScenario||'ok';
 const priorTopic=state.topic;
 Object.assign(state,currentRoute);
 if(currentRoute.screen==='chat'&&(!state.text || (priorTopic && priorTopic!==currentRoute.topic)))state.text=(texts[currentRoute.topic]||texts.other)[0];
+if(state.trail&&state.trail.length&&state.trail[state.trail.length-1]===ROUTE_PATH)state.trail=state.trail.slice(0,-1);
 document.body.dataset.pageId=ROUTE_PATH;
 document.title='Sabadell · '+currentRoute.title;
 
@@ -208,6 +209,12 @@ document.title='Sabadell · '+currentRoute.title;
 // forward: entra desde la derecha · back: vuelve desde la izquierda · tab: fundido entre pestañas · fade: arranque.
 const TAB_SCREENS=['home','money','products','contract','operations','profile','help','mailbox','notifications'];
 let NEXT_DIR=null;
+// Sin View Transitions entre documentos (Firefox, Safari < 18.2) se anima a mano: salida antes de navegar y entrada al cargar.
+const REDUCED_VT=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+const MANUAL_VT=!REDUCED_VT&&((typeof window.__MANUAL_VT==='boolean')?window.__MANUAL_VT:!('onpagereveal' in window));
+let ENTER_DIR=null;
+if(MANUAL_VT){try{ENTER_DIR=sessionStorage.getItem('sabadell-vt-dir');sessionStorage.removeItem('sabadell-vt-dir');}catch(err){}if(window.__enterDir){ENTER_DIR=window.__enterDir;window.__enterDir=null;}}
+let FIRST_RENDER=true;
 function dirFor(path){
  const ts=(ROUTES[path]||ROUTES['/inicio']).screen, cs=state.screen;
  if(['splash','login'].includes(cs)||['splash','login'].includes(ts))return 'fade';
@@ -215,6 +222,23 @@ function dirFor(path){
  if(a&&b)return 'tab';
  if(!a&&b)return 'back';
  return 'forward';
+}
+// V7.4 · «Atrás» vuelve a la pantalla de origen. trail = pila de pantallas visitadas desde la última pestaña principal.
+// Desde una pantalla final de un flujo (Bizum enviado, tarjeta bloqueada…) vuelve a donde empezó el flujo, nunca al paso de revisión.
+const FLOW_DONE=['/bizum/completado','/transferencia/completada','/recibos/completado','/seguridad/tarjeta-bloqueada','/seguridad/pago-reconocido','/contratar/solicitud-recibida'];
+function flowOf(p){const m=String(p).match(/^\/(bizum|transferencia|recibos|seguridad)\//);if(m)return m[1];if(/^\/contratar\/./.test(p))return 'contratar';return null;}
+function backTarget(){
+ const t=[...(state.trail||[])];
+ if(FLOW_DONE.includes(ROUTE_PATH)){const f=flowOf(ROUTE_PATH);while(t.length&&flowOf(t[t.length-1])===f)t.pop();}
+ const prev=t.pop()||'/inicio';
+ state.trail=t;return prev;
+}
+function trailOnGoto(path,isBack){
+ const ts=(ROUTES[path]||{}).screen;
+ if(TAB_SCREENS.includes(ts)){state.trail=[];return;}
+ if(isBack){const t=state.trail||[];if(t[t.length-1]===path)state.trail=t.slice(0,-1);return;}
+ if(['splash','login'].includes(state.screen))return;
+ state.trail=[...(state.trail||[]),ROUTE_PATH].slice(-20);
 }
 function setVtDir(path){const d=NEXT_DIR||dirFor(path);NEXT_DIR=null;window.__vtDir=d;try{sessionStorage.setItem('sabadell-vt-dir',d);}catch(err){}}
 function saveState(){try {sessionStorage.setItem(RS_KEY,JSON.stringify(state));}catch(err){}}
@@ -228,8 +252,15 @@ function appUrl(path){
 function goto(path,replace=false){
  saveState();
  if(path===ROUTE_PATH){render();return;}
+ trailOnGoto(path,NEXT_DIR==='back');
  setVtDir(path);
- if(TAB_SCREENS.includes((ROUTES[path]||{}).screen)){state.via='';state.history=[];saveState();}
+ if(TAB_SCREENS.includes((ROUTES[path]||{}).screen)){state.via='';state.history=[];}
+ saveState();
+ const go=()=>{if(replace)location.replace(appUrl(path));else location.assign(appUrl(path));};
+ const shell=MANUAL_VT&&root.querySelector('.screen-shell');
+ if(!shell){go();return;}
+ shell.className='screen-shell vt-manual-exit-'+window.__vtDir;
+ setTimeout(go,170);return;
  if(replace)location.replace(appUrl(path));else location.assign(appUrl(path));
 }
 function applyLiveScenario(msg){
@@ -305,8 +336,9 @@ function startFace(){
 function render(){
  const content=state.screen==='splash'?welcomeSplash():state.screen==='login'?loginScreen():state.screen==='home'?home():state.screen==='chat'?chat():state.screen==='products'?products():state.screen==='money'?moneyPage():state.screen==='detail'?detail():state.screen==='operations'?operations():state.screen==='contract'?contractPage():state.screen==='contract-detail'?contractDetail():state.screen==='contract-result'?contractResult():state.screen==='mailbox'?mailboxPage():state.screen==='profile'?profilePage():state.screen==='help'?helpPage():state.screen==='cover'?coverPage():state.screen==='fraud'?fraudPage():state.screen==='recognized'?paymentRecognized():state.screen==='forecast'?forecastPage():state.screen==='notifications'?notificationsPage():home();
  const isBoot=state.screen==='splash';
- root.innerHTML=`<div class="stage participant-mode"><section class="phone ${isBoot?'phone-splash':''}" aria-label="Sabadell">${status()}<div class="screen-shell route-enter">${content}</div><div class="home-indicator" aria-hidden="true"></div><div class="toast ${state.toast?'visible':''}" role="status">${esc(state.toast)}</div></section></div>`;
+ root.innerHTML=`<div class="stage participant-mode"><section class="phone ${isBoot?'phone-splash':''}" aria-label="Sabadell">${status()}<div class="screen-shell ${FIRST_RENDER&&ENTER_DIR?'vt-manual-enter-'+ENTER_DIR:''}">${content}</div><div class="home-indicator" aria-hidden="true"></div><div class="toast ${state.toast?'visible':''}" role="status">${esc(state.toast)}</div></section></div>`;
  saveState();
+ FIRST_RENDER=false;
 }
 function handleAct(a){
  if(a==='face-start'){startFace();return;}
@@ -323,9 +355,9 @@ function handleAct(a){
  if(a.startsWith('journey-')){journey(a.slice(8));return;}
  if(a.startsWith('nav-')){let t=a.slice(4);navigate(t==='operar'?'operations':t);return;}
  if(a==='back'){
-  NEXT_DIR='back';
-  const map={'/bizum/revision':'/bizum/datos','/bizum/completado':'/inicio','/transferencia/revision':'/transferencia/datos','/transferencia/completada':'/inicio','/buzon/mensaje':'/buzon','/recibos/completado':'/inicio','/seguridad/tarjeta-bloqueada':'/inicio','/recibos/cubrir':'/inicio','/seguridad/revisar':'/inicio','/seguridad/pago-reconocido':'/inicio','/cuentas/online':'/productos','/cuentas/ahorro':'/productos','/tarjetas/debito':'/productos'};
-  goto(map[ROUTE_PATH]|| (state.screen==='contract-detail'?'/contratar':'/inicio'));return;
+  const target=backTarget();
+  if((ROUTES[target]||{}).screen==='chat'&&state.history&&state.history.length){const h=state.history[state.history.length-1];state.history=state.history.slice(0,-1);state.text=h.text;state.topic=h.topic;}
+  NEXT_DIR='back';goto(target);return;
  }
  if(a==='mailbox'||a==='alerts'){state.mailOpen=false;goto('/buzon');return;}
  if(a==='mail-open'){state.mailRead=true;state.mailOpen=true;goto('/buzon/mensaje');return;}
