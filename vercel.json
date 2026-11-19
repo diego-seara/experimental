@@ -106,6 +106,22 @@
       "destination": "/pages/conversacion-ayuda.html"
     },
     {
+      "source": "/conversacion/seguridad",
+      "destination": "/pages/conversacion-seguridad.html"
+    },
+    {
+      "source": "/conversacion/recibo",
+      "destination": "/pages/conversacion-recibo.html"
+    },
+    {
+      "source": "/conversacion/fin-de-mes",
+      "destination": "/pages/conversacion-fin-de-mes.html"
+    },
+    {
+      "source": "/conversacion/persona",
+      "destination": "/pages/conversacion-persona.html"
+    },
+    {
       "source": "/bizum/datos",
       "destination": "/pages/bizum-datos.html"
     },

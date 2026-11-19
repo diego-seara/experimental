@@ -1,4 +1,4 @@
-# Sabadell · Research no moderado · V7 (UserZoom)
+# Sabadell · Research no moderado · V7.2 (UserZoom)
 
 ## Publicación en Vercel
 
@@ -24,6 +24,8 @@ Este directorio es una web estática. Se puede importar como proyecto y desplega
 /cuentas/online         /cuentas/ahorro               /tarjetas/debito
 /conversacion/saldo     /conversacion/pagos          /conversacion/gasto
 /conversacion/tarjetas  /conversacion/ayuda          /bizum/datos
+/conversacion/seguridad /conversacion/recibo         /conversacion/fin-de-mes
+/conversacion/persona
 /bizum/revision         /bizum/completado            /transferencia/datos
 /transferencia/revision /transferencia/completada   /recibos/cubrir
 /recibos/completado     /seguridad/revisar           /seguridad/tarjeta-bloqueada
@@ -46,3 +48,37 @@ Este directorio es una web estática. Se puede importar como proyecto y desplega
 - Insights: aparición sin movimiento de posición (200 ms).
 - Confirmaciones: escala apenas perceptible (220 ms), sin rebote.
 - Se conserva la transición de splash y la verificación de Face ID; `prefers-reduced-motion` desactiva las animaciones.
+
+
+## Cambios V7.2
+
+### 1. Lenguaje natural más robusto (detección local, sigue sin IA)
+- Entiende importes con «€», «eur», «euros» o «pavos» y verbos de envío («envía», «pásale», «mándale»…); rellena destinatario también con «a mi hermana».
+- Intenciones nuevas: **seguridad** (`/conversacion/seguridad`: bloquear, no reconozco, robo…), **cubrir recibo** (`/conversacion/recibo`, solo con aviso de saldo), **fin de mes** (`/conversacion/fin-de-mes`) y **persona** (`/conversacion/persona`).
+- El escenario activo manda: en `fraud`, «no reconozco un pago» lleva al pago retenido con bloquear / reconocer; en `warning`, «cubre la luz» lleva al traspaso.
+- Si no entiende, lo dice y ofrece lo que sí sabe hacer, incluida la persona. La pantalla de persona avisa de que esa parte no está en la prueba y deja registrada la intención por URL.
+- El chat conserva los tres intercambios anteriores en lugar de empezar de cero en cada mensaje.
+
+### 2. Datos coherentes
+- Una sola fuente de cifras (`money()` en `app.js`).
+- `warning`: Cuenta Online 64 € y luz 87 € el jueves 26 (faltan 23 €); total 929 €. Tras el traspaso: 87 € y 842 € en Ahorro.
+- Próximos 7 días: fibra 55,50 € (24 nov) + luz 87 € (26 nov) = 142,50 €. La estimación de gasto usa esas cifras y avisa si la Cuenta Online quedaría en negativo.
+- Previsión: nómina de 1.850 € el 28 y 1.240 € de recibos en todas las pantallas; la última nómina en movimientos es del 28 oct.
+
+### 3. Vía de entrada en la URL (`via`)
+Cada tarea arrastra `via` hasta su pantalla final (p. ej. `/bizum/completado?scenario=ok&via=caja`):
+
+| via | Origen |
+| --- | --- |
+| `caja` | Texto escrito en la caja del inicio |
+| `pill` | Atajo del inicio |
+| `aviso` | Acción del saludo (cubrir, bloquear, reconocer) |
+| `chat` | Texto escrito dentro de la conversación |
+| `chat-boton` | Botón dentro de la conversación |
+| `notificacion` | Desde Notificaciones |
+| `nav` | Resto de la app (Mi dinero, Operar, Productos, Ayuda…) |
+
+Las pestañas principales limpian `via`. En UserZoom, usar el patrón de URL de éxito con comodín y segmentar por `via`.
+
+### Otros
+- Se carga Libre Franklin desde Google Fonts en todas las páginas (antes caía a Arial).
