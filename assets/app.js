@@ -204,6 +204,19 @@ if(currentRoute.screen==='chat'&&(!state.text || (priorTopic && priorTopic!==cur
 document.body.dataset.pageId=ROUTE_PATH;
 document.title='Sabadell · '+currentRoute.title;
 
+// V7.3 · Dirección de la transición entre pantallas (View Transitions entre documentos).
+// forward: entra desde la derecha · back: vuelve desde la izquierda · tab: fundido entre pestañas · fade: arranque.
+const TAB_SCREENS=['home','money','products','contract','operations','profile','help','mailbox','notifications'];
+let NEXT_DIR=null;
+function dirFor(path){
+ const ts=(ROUTES[path]||ROUTES['/inicio']).screen, cs=state.screen;
+ if(['splash','login'].includes(cs)||['splash','login'].includes(ts))return 'fade';
+ const a=TAB_SCREENS.includes(cs), b=TAB_SCREENS.includes(ts);
+ if(a&&b)return 'tab';
+ if(!a&&b)return 'back';
+ return 'forward';
+}
+function setVtDir(path){const d=NEXT_DIR||dirFor(path);NEXT_DIR=null;window.__vtDir=d;try{sessionStorage.setItem('sabadell-vt-dir',d);}catch(err){}}
 function saveState(){try {sessionStorage.setItem(RS_KEY,JSON.stringify(state));}catch(err){}}
 function appUrl(path){
  const qs=new URLSearchParams(location.search);
@@ -215,6 +228,8 @@ function appUrl(path){
 function goto(path,replace=false){
  saveState();
  if(path===ROUTE_PATH){render();return;}
+ setVtDir(path);
+ if(TAB_SCREENS.includes((ROUTES[path]||{}).screen)){state.via='';state.history=[];saveState();}
  if(replace)location.replace(appUrl(path));else location.assign(appUrl(path));
 }
 function applyLiveScenario(msg){
@@ -295,7 +310,7 @@ function render(){
 }
 function handleAct(a){
  if(a==='face-start'){startFace();return;}
- if(a==='back-login'){goto('/splash');return;}
+ if(a==='back-login'){NEXT_DIR='fade';goto('/splash');return;}
  if(a==='profile'){navigate('profile');return;}
  if(a==='help'){navigate('help');return;}
  if(a==='forecast'){navigate('forecast');return;}
@@ -308,6 +323,7 @@ function handleAct(a){
  if(a.startsWith('journey-')){journey(a.slice(8));return;}
  if(a.startsWith('nav-')){let t=a.slice(4);navigate(t==='operar'?'operations':t);return;}
  if(a==='back'){
+  NEXT_DIR='back';
   const map={'/bizum/revision':'/bizum/datos','/bizum/completado':'/inicio','/transferencia/revision':'/transferencia/datos','/transferencia/completada':'/inicio','/buzon/mensaje':'/buzon','/recibos/completado':'/inicio','/seguridad/tarjeta-bloqueada':'/inicio','/recibos/cubrir':'/inicio','/seguridad/revisar':'/inicio','/seguridad/pago-reconocido':'/inicio','/cuentas/online':'/productos','/cuentas/ahorro':'/productos','/tarjetas/debito':'/productos'};
   goto(map[ROUTE_PATH]|| (state.screen==='contract-detail'?'/contratar':'/inicio'));return;
  }
@@ -330,7 +346,7 @@ function handleAct(a){
   if(err){state.formError=err;render();return;}
   state.formError='';goto(state.topic==='transfer'?'/transferencia/revision':'/bizum/revision');return;
  }
- if(a==='edit'){goto(state.topic==='transfer'?'/transferencia/datos':'/bizum/datos');return;}
+ if(a==='edit'){NEXT_DIR='back';goto(state.topic==='transfer'?'/transferencia/datos':'/bizum/datos');return;}
  if(a==='confirm'){goto(state.topic==='transfer'?'/transferencia/completada':'/bizum/completado');return;}
  if(a==='new-operation'){journey(state.topic);return;}
  if(a==='mic'){state.toast='El micrófono no está disponible. Puedes escribir tu consulta.';render();return;}

@@ -383,3 +383,32 @@ kbd{font-family:inherit;font-weight:650;border:1px solid #d1d7e0;background:#fff
 .face-card h2{font-size:18px;font-weight:600;margin:0 0 9px}
 .face-card p{font-size:13px;margin:0;color:#f7f7f7}
 @media(prefers-reduced-motion:reduce){.route-enter,.face-overlay,.face-glyph,.face-glyph:after{animation:none!important}}
+
+
+/* V7.3 · Transiciones entre pantallas con View Transitions (Chrome 126+, Safari 18.2+).
+   Cada URL sigue siendo un documento distinto: el navegador fotografía la pantalla saliente y anima la entrante.
+   Barra de estado, indicador de inicio y navegación inferior quedan quietos; solo se mueve la pantalla,
+   recortada al marco del móvil. Sin soporte, se navega como antes. */
+@view-transition{navigation:auto}
+.statusbar{view-transition-name:vt-status}
+.home-indicator{view-transition-name:vt-indicator}
+.bottomnav{view-transition-name:vt-nav}
+.screen-shell{view-transition-name:vt-screen}
+@supports (view-transition-name:none){.route-enter{animation:none}}
+::view-transition-group(*){animation-duration:.34s;animation-timing-function:cubic-bezier(.22,.8,.24,1)}
+::view-transition-old(vt-screen),::view-transition-new(vt-screen){animation-duration:.34s;animation-timing-function:cubic-bezier(.22,.8,.24,1);animation-fill-mode:both;mix-blend-mode:normal}
+html:active-view-transition-type(forward)::view-transition-new(vt-screen){animation-name:vt-in-right}
+html:active-view-transition-type(forward)::view-transition-old(vt-screen){animation-name:vt-out-left}
+html:active-view-transition-type(back)::view-transition-new(vt-screen){animation-name:vt-in-left}
+html:active-view-transition-type(back)::view-transition-old(vt-screen){animation-name:vt-out-right;z-index:1}
+html:active-view-transition-type(tab)::view-transition-old(vt-screen){animation:vt-fade-out .14s ease-out both}
+html:active-view-transition-type(tab)::view-transition-new(vt-screen){animation:vt-fade-in .2s ease-out both}
+html:active-view-transition-type(fade)::view-transition-old(*),html:active-view-transition-type(fade)::view-transition-new(*){animation-duration:.32s;animation-timing-function:ease}
+/* La pantalla se desplaza y a la vez se recorta en sentido contrario: nunca asoma fuera del marco del móvil. */
+@keyframes vt-in-right{from{transform:translateX(100%);clip-path:inset(0 100% 0 0)}to{transform:none;clip-path:inset(0)}}
+@keyframes vt-out-left{from{transform:none;clip-path:inset(0);filter:brightness(1)}to{transform:translateX(-28%);clip-path:inset(0 0 0 28%);filter:brightness(.9)}}
+@keyframes vt-in-left{from{transform:translateX(-28%);clip-path:inset(0 0 0 28%);filter:brightness(.9)}to{transform:none;clip-path:inset(0);filter:brightness(1)}}
+@keyframes vt-out-right{from{transform:none;clip-path:inset(0)}to{transform:translateX(100%);clip-path:inset(0 100% 0 0)}}
+@keyframes vt-fade-out{to{opacity:0}}
+@keyframes vt-fade-in{from{opacity:0}}
+@media(prefers-reduced-motion:reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}

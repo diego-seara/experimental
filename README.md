@@ -1,4 +1,4 @@
-# Sabadell · Research no moderado · V7.2 (UserZoom)
+# Sabadell · Research no moderado · V7.3 (UserZoom)
 
 ## Publicación en Vercel
 
@@ -82,3 +82,14 @@ Las pestañas principales limpian `via`. En UserZoom, usar el patrón de URL de 
 
 ### Otros
 - Se carga Libre Franklin desde Google Fonts en todas las páginas (antes caía a Arial).
+
+
+## Cambios V7.3 · Transiciones
+
+- Transiciones entre pantallas con **View Transitions entre documentos** (`@view-transition`), así cada paso sigue siendo una URL y un documento distintos para UserZoom.
+- **Avanzar** (abrir una conversación, un detalle, un paso del flujo): la pantalla nueva entra desde la derecha y la anterior se desplaza un poco y se oscurece, como en iOS.
+- **Volver** (flecha atrás, «Editar datos», volver al inicio desde un flujo o el botón atrás del navegador): el movimiento contrario.
+- **Entre pestañas** (Inicio, Mi dinero, Productos, Contratar…): fundido corto, sin desplazamiento.
+- **Arranque** (splash → acceso → inicio): fundido.
+- Barra de estado, indicador de inicio y navegación inferior no se mueven; la pantalla se recorta al marco del móvil.
+- Requiere Chrome/Edge 126+ o Safari 18.2+. En otros navegadores se navega igual que en V7.2. `prefers-reduced-motion` las desactiva.
