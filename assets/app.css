@@ -428,3 +428,157 @@ html:active-view-transition-type(fade)::view-transition-old(*),html:active-view-
 @keyframes vtm-fade-out{to{opacity:0}}
 @keyframes vtm-fade-in{from{opacity:0}}
 @media(prefers-reduced-motion:reduce){[class*="vt-manual-"]>*{animation:none!important}}
+
+
+/* ═══ V7.5 · Acercamiento visual a Galatea, a partir del proto de Make (src/imports/Inicio, app-header, bottom-nav,
+   chat-header, chat-message, chat-composer, artifact-kit y la escala tipográfica de guidelines/Guidelines.md).
+   Solo capa visual: misma estructura, mismas rutas, mismas acciones. Los tokens del kit no vienen en el código
+   exportado; estos valores salen de los literales de las pantallas de Figma. ═══ */
+:root{
+ --g-content-default:#000;--g-content-soft:#646464;--g-brand:#006dff;--g-brand-pressed:#0057cc;
+ --g-border-soft:#e0e0e0;--g-border-default:#bdbdbd;--g-bg-default:#fff;--g-bg-soft-1:#f5f5f5;--g-bg-soft-2:#eeeeee;--g-bg-header:#fafafa;
+ --g-radius-sm:4px;--g-radius-md:8px;--g-radius-lg:16px;--g-radius-full:999px;
+ --g-shadow-soft:0 2px 10px rgba(0,0,0,.06);--g-focus:0 0 0 2px #fff,0 0 0 4px #006dff;
+}
+body,button,input,textarea{color:var(--g-content-default)}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:none;box-shadow:var(--g-focus)}
+
+/* Inicio: saludo, caja y atajos */
+.hello{font-size:32px;line-height:36px;font-weight:600;letter-spacing:-.5px;color:var(--g-content-default)}
+.hero-insight{font-size:16px;line-height:24px;color:var(--g-content-soft)}
+.insight-text-link{font-size:16px;line-height:24px;font-weight:600;color:var(--g-brand)}
+.insight-disclaimer{font-size:12px;line-height:16px;color:var(--g-content-soft)}
+.insight-danger-primary{min-height:40px;padding:8px 16px;font-size:14px;line-height:20px;font-weight:600;border-radius:var(--g-radius-full)}
+.insight-danger-secondary{min-height:40px;font-size:14px;line-height:20px;font-weight:600;color:var(--g-content-default)}
+.prompt-title{font-size:20px;line-height:24px;font-weight:600;letter-spacing:0;color:var(--g-content-default)}
+.prompt{background:var(--g-bg-soft-1);border:1px solid var(--g-border-soft);border-radius:var(--g-radius-lg);box-shadow:none;transition:background-color .2s,border-color .2s,box-shadow .2s}
+.prompt:focus-within{background:var(--g-bg-default);border-color:var(--g-border-default);box-shadow:var(--g-focus)}
+.prompt textarea{font-size:16px;line-height:24px;color:var(--g-content-default)}
+.prompt textarea:focus-visible{box-shadow:none}
+.prompt textarea::placeholder{color:var(--g-content-soft)}
+.prompt-round{width:40px;height:40px;color:var(--g-content-soft)}
+.send{width:40px;height:40px;border-radius:50%;background:var(--g-brand)}
+.send:hover,.button-primary:hover{background:var(--g-brand-pressed)}
+.actions-label{font-size:14px;line-height:21px;color:var(--g-content-soft);font-weight:400;margin:16px 0 8px}
+.quick-pills{gap:8px}
+.pill{min-height:40px;padding:8px 16px 8px 12px;border:1px solid var(--g-border-default);border-radius:var(--g-radius-full);background:var(--g-bg-default);color:var(--g-content-default);font-size:14px;line-height:20px;font-weight:400;gap:8px}
+.pill svg{color:var(--g-brand)}
+.pill:hover{background:var(--g-bg-soft-1);border-color:var(--g-border-default)}
+
+/* Productos: tarjetas blancas con borde #bdbdbd y radio 16, sin sombra (como en Inicio) */
+.products-panel{border-top:8px solid var(--g-bg-header)}
+.section-head h2{font-size:18px;line-height:28px;font-weight:400;letter-spacing:0;color:var(--g-content-default)}
+.textlink{font-size:16px;line-height:24px;font-weight:400;color:var(--g-brand)}
+.product-tile{border:1px solid var(--g-border-default);border-radius:var(--g-radius-lg);box-shadow:none;padding:16px;gap:12px}
+.product-tile:hover{background:var(--g-bg-default);border-color:var(--g-border-default);box-shadow:var(--g-shadow-soft)}
+.tile-title{font-size:16px;line-height:24px;color:var(--g-content-default);font-weight:400}
+.tile-money{font-size:18px;line-height:28px;font-weight:400;letter-spacing:0;color:var(--g-content-default)}
+.product-tile:nth-child(2) .tile-money{font-size:18px}
+.tile-meta{font-size:12px;line-height:16px;color:var(--g-content-soft)}
+.tile-account-icon{width:40px;height:40px}
+
+/* Navegación inferior: etiquetas 14/21 como bottom-nav.tsx */
+.nav-item{font-size:14px;line-height:21px;gap:8px;color:var(--g-content-soft)}
+.nav-item[aria-current="page"]{color:var(--g-content-default);font-weight:700}
+
+/* Cabeceras con volver: título 14/21 Bold */
+.backbar{height:64px;background:var(--g-bg-header);border-bottom:1px solid var(--g-border-soft)}
+.backbar .heading{font-size:14px;line-height:21px;font-weight:700;color:var(--g-content-default)}
+.backbar small{font-size:12px;line-height:16px;color:var(--g-content-soft);font-weight:400}
+.backbar .iconbtn{width:44px;min-width:44px;height:44px;border-radius:50%;color:var(--g-brand)}
+
+/* Chat: cabecera con identidad, tres voces y barra de escritura en píldora */
+.chatbar{background:var(--g-bg-default)}
+.chat-identity{flex:1;min-width:0;display:flex;align-items:center;gap:12px}
+.chat-identity-text{display:flex;flex-direction:column;min-width:0}
+.chat-identity-text strong{font-size:16px;line-height:24px;font-weight:600;color:var(--g-content-default)}
+.chat-identity-text small{font-size:14px;line-height:20px;color:var(--g-content-soft);margin:0}
+.assistant-disc{width:32px;height:32px;flex:none;border-radius:50%;display:grid;place-items:center;background:var(--g-brand);color:#fff;box-shadow:0 0 0 4px rgba(0,109,255,.10)}
+.assistant-avatar{width:32px;height:32px;background:transparent;border-radius:50%}
+.assistant-avatar .assistant-disc{box-shadow:none}
+.chat{padding:16px 16px 24px}
+.chat-kicker{font-size:12px;line-height:16px;color:var(--g-content-soft)}
+.user-bubble{max-width:85%;background:var(--g-bg-soft-2);border:0;color:var(--g-content-default);border-radius:var(--g-radius-lg) var(--g-radius-lg) var(--g-radius-sm) var(--g-radius-lg);padding:12px 16px;font-size:16px;line-height:24px}
+.assistant-row{gap:8px}
+.assistant-sign{font-size:12px;line-height:16px;color:var(--g-content-soft);margin:0 0 4px}
+.assistant-bubble{background:var(--g-bg-default);border:1px solid var(--g-border-soft);border-radius:var(--g-radius-sm) var(--g-radius-lg) var(--g-radius-lg) var(--g-radius-lg);padding:12px 16px}
+.assistant-content .assistant-bubble p{margin:0;font-size:16px;line-height:24px;color:var(--g-content-default)}
+.assistant-content strong{color:var(--g-content-default);font-weight:600}
+.chat-composer{border-top:0;padding:8px 16px 12px;gap:8px}
+.chat-composer input{min-height:48px;border:1px solid var(--g-border-soft);background:var(--g-bg-soft-1);border-radius:var(--g-radius-full);padding:0 20px;font-size:16px;color:var(--g-content-default);transition:background-color .2s,border-color .2s,box-shadow .2s}
+.chat-composer input::placeholder{color:var(--g-content-soft)}
+.chat-composer input:focus{background:var(--g-bg-default);border-color:var(--g-border-default);box-shadow:var(--g-focus)}
+.chat-composer .send{width:44px;height:44px}
+
+/* Tarjetas del chat (plantilla de artefactos): superficie blanca, borde suave, radio lg; respuestas rápidas apiladas */
+.answer-panel{border:1px solid var(--g-border-soft);border-radius:var(--g-radius-lg);box-shadow:var(--g-shadow-soft);padding:16px;margin-top:12px}
+.answer-eyebrow{font-size:14px;line-height:20px;color:var(--g-content-soft);font-weight:400}
+.answer-total{font-size:24px;line-height:32px;font-weight:700;letter-spacing:0;margin:4px 0 12px;color:var(--g-content-default)}
+.mini-row{font-size:14px;line-height:20px;color:var(--g-content-soft);border-top:1px solid var(--g-border-soft);padding:12px 0}
+.mini-row strong{font-weight:600;color:var(--g-content-default)}
+.mini-sub{font-size:12px;line-height:16px;color:var(--g-content-soft)}
+.inline-actions{flex-direction:column;align-items:flex-start;gap:8px;margin-top:12px}
+.inline-button{min-height:40px;padding:8px 16px;background:var(--g-bg-default);border:1px solid var(--g-brand);border-radius:var(--g-radius-full);color:var(--g-brand);font-size:14px;line-height:20px;font-weight:600;text-align:left}
+.inline-button:hover{background:#f0f6ff}
+.inline-actions .pill{border-color:var(--g-brand);color:var(--g-brand);font-weight:600}
+.cash-note{background:#e8f5ee;color:#1e4d33;border-radius:var(--g-radius-md);font-size:14px;line-height:21px;padding:12px 16px}
+
+/* Formularios y botones (ButtonSet: apilados, uno principal) */
+.form-card{border:1px solid var(--g-border-soft);border-radius:var(--g-radius-lg);box-shadow:var(--g-shadow-soft);padding:16px}
+.form-title{font-size:18px;line-height:27px;font-weight:600}
+.form-desc{font-size:14px;line-height:21px;color:var(--g-content-soft);margin-bottom:8px}
+.field{margin-top:16px}
+.field label{font-size:14px;line-height:20px;font-weight:400;color:var(--g-content-default);margin-bottom:8px}
+.field input{height:48px;border:1px solid var(--g-border-default);border-radius:var(--g-radius-md);font-size:16px;padding:0 16px;color:var(--g-content-default)}
+.field input:focus{border-color:var(--g-brand);box-shadow:var(--g-focus)}
+.input-prefix:after{top:14px;right:16px;color:var(--g-content-soft);font-weight:400}
+.form-error{font-size:14px;line-height:20px;color:#c62828}
+.button-primary{min-height:48px;border-radius:var(--g-radius-full);background:var(--g-brand);font-size:16px;line-height:24px;font-weight:600;margin-top:24px}
+.button-secondary{min-height:48px;border:1px solid var(--g-brand);border-radius:var(--g-radius-full);color:var(--g-brand);background:var(--g-bg-default);font-size:16px;line-height:24px;font-weight:600;margin-top:8px}
+.review-amount{font-size:32px;line-height:36px;font-weight:700;letter-spacing:0}
+.review-details,.simulation-summary{background:var(--g-bg-soft-1);border:0;border-radius:var(--g-radius-md);padding:4px 16px}
+.simulation-summary .mini-row{font-size:14px}
+.simulation-summary .mini-row:first-child,.review-details .mini-row:first-child{border-top:0}
+.success-title{font-size:20px;line-height:24px;font-weight:600}
+.success-desc{font-size:14px;line-height:21px;color:var(--g-content-soft)}
+.notice-strip{font-size:14px;line-height:21px;color:var(--g-content-soft);background:var(--g-bg-soft-1);border:0;border-radius:var(--g-radius-md);padding:12px 16px}
+.flow-kicker{font-size:14px;line-height:20px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--g-content-soft)}
+.simulation-title{font-size:24px;line-height:32px;font-weight:600;letter-spacing:-.2px}
+.simulation-subtitle{font-size:16px;line-height:24px;color:var(--g-content-soft)}
+
+/* Páginas: títulos, filas de producto y movimientos */
+.page-title{font-size:24px;line-height:32px;font-weight:600;letter-spacing:-.2px;color:var(--g-content-default)}
+.page-subtitle{font-size:16px;line-height:24px;color:var(--g-content-soft)}
+.page-heading-small{font-size:20px;line-height:24px;font-weight:600;margin:32px 0 16px}
+.product-row{border:1px solid var(--g-border-default);border-radius:var(--g-radius-lg);box-shadow:none;padding:16px;gap:16px;margin-bottom:12px}
+.product-row:hover{background:var(--g-bg-default);border-color:var(--g-border-default);box-shadow:var(--g-shadow-soft)}
+.row-icon{width:40px;height:40px;border-radius:50%;background:transparent;border:1px solid var(--g-brand);color:var(--g-brand)}
+.row-title{font-size:16px;line-height:24px;font-weight:400;color:var(--g-content-default)}
+.row-subtitle{font-size:14px;line-height:21px;color:var(--g-content-soft);margin-top:0}
+.row-amount{font-size:18px;line-height:28px;font-weight:400;color:var(--g-content-default)}
+.movement{padding:12px 0;border-bottom:1px solid var(--g-border-soft)}
+.movement-icon{width:40px;height:40px;border-radius:50%;background:var(--g-bg-soft-1);color:var(--g-content-default)}
+.movement-name{font-size:16px;line-height:24px;font-weight:400}
+.movement-name small{font-size:14px;line-height:21px;color:var(--g-content-soft);font-weight:400;margin-top:0}
+.movement-value{font-size:16px;line-height:24px;font-weight:600}
+.money-overview,.account-hero{background:var(--g-bg-header);border:0;border-radius:var(--g-radius-lg);padding:16px}
+.money-kicker,.account-hero small{font-size:14px;line-height:21px;color:var(--g-content-soft)}
+.money-total,.account-hero strong{font-size:32px;line-height:36px;font-weight:400;letter-spacing:0;color:var(--g-content-default)}
+.money-support,.account-hero span{font-size:14px;line-height:21px;color:var(--g-content-soft)}
+.money-link,.helper-link{font-size:16px;line-height:24px;font-weight:600;color:var(--g-brand)}
+.action-card{border:1px solid var(--g-border-default);border-radius:var(--g-radius-lg);font-size:16px;line-height:24px;font-weight:400;color:var(--g-content-default);padding:16px}
+.action-card:hover{background:var(--g-bg-soft-1)}
+.money-actions .action-card{font-size:14px;line-height:21px}
+.home-guide h3{font-size:18px;line-height:27px;font-weight:600}
+.home-guide p{font-size:14px;line-height:21px;color:var(--g-content-soft)}
+.contract-banner{border-radius:var(--g-radius-lg)}
+.contract-banner strong{font-size:18px;line-height:27px;font-weight:600}
+.contract-banner p{font-size:14px;line-height:21px}
+.contract-feature{font-size:16px;line-height:24px;color:var(--g-content-default)}
+.toast{background:#222;border-radius:var(--g-radius-md);font-size:14px;line-height:20px;padding:12px 16px}
+.login-account h1{font-weight:600}
+@media(max-width:360px){.nav-item{font-size:12px}.pill{font-size:13px}}
+.row-content{display:flex;flex-direction:column;min-width:0}
+.page-content .section-head h2{font-size:20px;line-height:24px;font-weight:600}
+.helper-link{display:inline-flex;align-items:center;gap:4px}
+.home-guide{border-radius:0;border-left:0;border-right:0;border-bottom:0}

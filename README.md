@@ -1,4 +1,4 @@
-# Sabadell · Research no moderado · V7.4 (UserZoom)
+# Sabadell · Research no moderado · V7.5 (UserZoom)
 
 ## Publicación en Vercel
 
@@ -102,3 +102,22 @@ Las pestañas principales limpian `via`. En UserZoom, usar el patrón de URL de 
 - Las pestañas principales (Inicio, Mi dinero, Productos, Contratar…) reinician el recorrido. El botón atrás del navegador sigue funcionando y mantiene el recorrido sincronizado.
 - **Transición de salida** más visible: la pantalla que se va se desplaza, se oscurece y pierde opacidad.
 - **Sin View Transitions** (Firefox, Safari < 18.2): la pantalla sale animada antes de navegar (170 ms) y la nueva entra animada, en la dirección correcta.
+
+
+## Cambios V7.5 · Más cerca de Galatea
+
+Capa visual nueva al final de `assets/app.css` (todo lo anterior intacto), sacada del proto de Make: `Inicio`, `app-header`,
+`bottom-nav`, `chat-header`, `chat-message`, `chat-composer`, `artifact-kit` y la escala tipográfica de sus guidelines.
+
+- **Tipografía Galatea:** solo 400/600/700 y la escala del Figma (saldo 32/36, importes 24/32 Bold, títulos 20/24 SemiBold,
+  texto 16/24, texto pequeño 14/21, etiquetas 14/20, mínimo 12/16, cabeceras 14/21 Bold). Navegación inferior a 14/21.
+- **Tarjetas y filas de producto** blancas con borde #bdbdbd, radio 16 y sin sombra; importes 18/28 Regular; iconos en
+  círculo con borde azul.
+- **Caja del inicio y barra del chat** como `chat-composer`: fondo gris claro, borde suave y, al enfocar, fondo blanco con
+  anillo de foco doble. Atajos como chips (40 px, borde #bdbdbd, 14/20).
+- **Chat con las voces del proto:** cabecera con avatar (disco azul con destello), «Asistente digital» y «En línea»; turnos
+  del asistente firmados y en burbuja blanca con borde; Laura en burbuja gris a la derecha.
+- **Tarjetas del chat** con la plantilla de artefactos (superficie blanca, borde suave, radio 16) y respuestas rápidas como
+  botones secundarios apilados, una por línea.
+- **Botones** de 48 px y 16/24 SemiBold; campos de 48 px con radio 8; resúmenes en panel gris claro.
+- Los tokens del kit no vienen en el código exportado: los valores salen de los literales de las pantallas de Figma.
