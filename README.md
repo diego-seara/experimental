@@ -75,7 +75,9 @@ Cada tarea arrastra `via` hasta su pantalla final (p. ej. `/bizum/completado?sce
 | via | Origen |
 | --- | --- |
 | `caja` | Texto escrito en la caja del inicio |
-| `pill` | Atajo del inicio |
+| `pill` | Atajo del inicio (solo con `?pills=directo`) |
+| `pill-escrita` | Atajo del inicio que rellenó la caja y se envió sin cambiar la frase base |
+| `caja-fija` | Texto escrito en la barra de pregunta fija de las pestañas y pantallas de detalle |
 | `aviso` | Acción del saludo (cubrir, bloquear, reconocer) |
 | `chat` | Texto escrito dentro de la conversación |
 | `chat-boton` | Botón dentro de la conversación |
@@ -159,3 +161,15 @@ que toque; si no entiende, lo dice y mantiene las opciones.
 
 Criterios: explorar no genera contacto comercial, la oferta se puede descartar, siempre hay salida a una persona y las
 alternativas se muestran aunque no sean un producto del banco.
+
+
+## V7.7 · Barras coherentes y barra de pregunta fija
+**Reglas de barras**
+- Cabecera con avatar, ojo, buzón y ayuda: solo en las 4 pestañas (Inicio, Mi dinero, Productos, Contratar).
+- El resto de pantallas llevan flecha de volver y título. Se elimina la casa de la esquina superior derecha (duplicaba «Inicio» y el volver-al-origen).
+- Perfil, Buzón, Ayuda, Notificaciones y Operar dejan de ser «pestañas»: son pantallas apiladas y «volver» regresa a donde estabas.
+- Barra inferior solo en pestañas y detalles (cuentas, tarjeta, hipoteca, préstamo contratado, previsión, Contratar → producto) con la pestaña padre marcada. Los flujos (Bizum, transferencia, amortizar, préstamo, cubrir recibo, seguridad, solicitud recibida) y el chat van a pantalla completa, sin barra inferior.
+
+**Asistente en el centro**
+- Barra de pregunta fija sobre la navegación en Mi dinero, Productos, Contratar y pantallas de detalle, con placeholder contextual («Pregunta sobre tu hipoteca…»).
+- Las pills del inicio escriben en la caja en vez de abrir la pantalla: «Quiero enviar un Bizum a …», «¿Cuánto dinero tengo?». `?pills=directo` restaura el comportamiento anterior para comparar celdas en UserZoom.
