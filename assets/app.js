@@ -427,7 +427,7 @@ if(ROUTE_PATH==='/'||ROUTE_PATH==='/splash'){
 }
 Object.assign(state,baseState,saved);
 state.form={...defaultForm,...(saved.form||{})};
-state.sim={...baseState.sim,...(saved.sim||{})};state.scriptTyping=false;
+state.sim={...baseState.sim,...(saved.sim||{})};state.scriptTyping=false;state.toast='';state.pillFill='';
 if(requestedScenario && requestedScenario!==state.scenario){
  state.scenario=requestedScenario;
  state.insight=requestedScenario;
@@ -559,7 +559,7 @@ function navigate(screen){
  goto(map[screen]||'/inicio');
 }
 function detailOf(type){state.detail=type;goto(type==='card'?'/tarjetas/debito':type==='savings'?'/cuentas/ahorro':'/cuentas/online')}
-function send(from){const q=(from==='chat'?state.chatText:state.query).trim();if(!q){state.toast='Escribe qué necesitas o elige una sugerencia.';render();return;}if(from==='chat'&&state.screen==='chat'&&state.script&&SCRIPT_TOPICS.includes(state.topic)){scriptInput(q);return;}const pf=state.pillFill;state.pillFill='';const via=from==='chat'?'chat':(pf&&q.startsWith(pf.trim()))?'pill-escrita':state.screen==='home'?'caja':'caja-fija';journey(guess(q),q,via)}
+function send(from){const q=(from==='chat'?state.chatText:state.query).trim();if(!q){const box=root.querySelector(from==='chat'?'#chat-input':'#home-prompt,#dock-prompt');if(box)box.focus();return;}if(from==='chat'&&state.screen==='chat'&&state.script&&SCRIPT_TOPICS.includes(state.topic)){scriptInput(q);return;}const pf=state.pillFill;state.pillFill='';const via=from==='chat'?'chat':(pf&&q.startsWith(pf.trim()))?'pill-escrita':state.screen==='home'?'caja':'caja-fija';journey(guess(q),q,via)}
 function contractResult(){return `${headerBack('Solicitud enviada','Contratar')}<main class="main" id="scroller"><div class="page-content"><div class="success-symbol" style="margin:34px 0 18px">${icon('check',29)}</div><h1 class="simulation-title">Solicitud recibida</h1><p class="simulation-subtitle">Hemos recibido tu solicitud de información. Te contactaremos para continuar.</p><button class="button-primary" data-action="nav-contract">Volver a Contratar</button></div></main>${nav()}`;}
 function paymentRecognized(){return `${headerBack('Seguridad','Pago reconocido')}<main class="main" id="scroller"><div class="page-content"><div class="success-symbol" style="margin:34px 0 18px">${icon('check',29)}</div><h1 class="simulation-title">Pago reconocido</h1><p class="simulation-subtitle">Has confirmado el pago de 349,00 € en tienda-online.xyz.</p><button class="button-primary" data-action="nav-home">Volver al inicio</button></div></main>${nav()}`;}
 function welcomeSplash(){
@@ -573,6 +573,7 @@ function startFace(){
  state.faceScanning=true;state.faceDone=false;render();
  faceTimer=window.setTimeout(()=>{state.faceDone=true;render();faceTimer=window.setTimeout(()=>{faceTimer=null;state.faceScanning=false;state.faceDone=false;goto('/inicio')},620)},1350);
 }
+let TOAST_T=null;
 function render(){
  const content=state.screen==='splash'?welcomeSplash():state.screen==='login'?loginScreen():state.screen==='home'?home():state.screen==='chat'?chat():state.screen==='products'?products():state.screen==='money'?moneyPage():state.screen==='detail'?detail():state.screen==='operations'?operations():state.screen==='contract'?contractPage():state.screen==='contract-detail'?contractDetail():state.screen==='contract-result'?contractResult():state.screen==='mailbox'?mailboxPage():state.screen==='profile'?profilePage():state.screen==='help'?helpPage():state.screen==='cover'?coverPage():state.screen==='fraud'?fraudPage():state.screen==='recognized'?paymentRecognized():state.screen==='forecast'?forecastPage():state.screen==='notifications'?notificationsPage():CREDIT_SCREENS[state.screen]?CREDIT_SCREENS[state.screen]():home();
  // V7.7 · Reglas de barras. Cabecera de pestañas solo en las 4 pestañas; el resto, volver + título.
@@ -588,6 +589,8 @@ function render(){
  const isBoot=state.screen==='splash';
  root.innerHTML=`<div class="stage participant-mode"><section class="phone ${isBoot?'phone-splash':''}" aria-label="Sabadell">${status()}<div class="screen-shell ${FIRST_RENDER&&ENTER_DIR?'vt-manual-enter-'+ENTER_DIR:''}">${body}</div><div class="home-indicator" aria-hidden="true"></div><div class="toast ${state.toast?'visible':''}" role="status">${esc(state.toast)}</div></section></div>`;
  saveState();
+ clearTimeout(TOAST_T);
+ if(state.toast)TOAST_T=setTimeout(()=>{state.toast='';const t=root.querySelector('.toast');if(t)t.classList.remove('visible');saveState();},3200);
  if(FIRST_RENDER&&state.screen==='chat'&&state.script){const sc=root.querySelector('#scroller');if(sc)sc.scrollTop=sc.scrollHeight;}
  FIRST_RENDER=false;
 }
