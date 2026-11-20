@@ -249,3 +249,7 @@ Todo con el mismo motor que el Bizum conversacional (guion por pasos, chips, tex
 - **Transferencia** (`/transferencia/datos` → `/revision` → `/completada`): entiende "pásale 950 al casero", "pasa 100 € a mi ahorro" o un IBAN. Agenda con IBAN (Inmobiliaria Sol, Mamá, Cuenta Ahorro). IBAN validado con dígito de control; aviso de "primera vez a esta cuenta". Inmediata/normal (gratis). **Firma con deslizador**. Descuenta saldo, aparece en movimientos (y en Ahorro si es un traspaso) y en el insight de Inicio.
 - **Hablar con una persona** (`/conversacion/persona`), como el original: tarjeta con el resumen que se le pasa (motivo, lo hecho, lo pendiente, sacado de la conversación) → Hablar con un especialista / Prefiero que me llamen / Seguir con el asistente. Conexión → "Te paso con Javier, de Atención al cliente" → la cabecera cambia a la persona, que lee el caso, escribe y responde (guion simulado). Tarjetas/fraude → Lucía Ferrer (Equipo de Tarjetas). Llamada con franjas. `?persona=no` = nadie disponible por chat, solo llamada.
 - **"No sé hacerlo"**: el primer atajo es Hablar con una persona, con lo que escribió el usuario como motivo.
+
+## V7.18 — Caja conversacional arriba, con resplandor
+- En Inicio la caja "Pregúntanos o pídenos algo…" sube junto al saludo; debajo, el insight de último movimiento, los atajos y Tus productos. Desaparece la caja de abajo.
+- Resplandor sutil: aro con degradado de marca (azul, violeta, cian, rosa) que gira muy despacio + halo difuminado; al enfocar se intensifica. Estático con "reducir movimiento".

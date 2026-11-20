@@ -1097,3 +1097,24 @@ div.acc-row:hover{background:#fff}
 .assistant-row.is-agent .assistant-bubble{background:#f4f1fb;border-color:#e4dcf5}
 .agent-reading{display:flex;align-items:center;gap:8px;justify-content:center;font-size:12.5px;color:#646464;margin:14px 0}
 .chatbar.is-agent{animation:oper-fade .35s ease both}
+/* V7.18 Caja conversacional arriba con resplandor */
+@property --glow-a{syntax:'<angle>';inherits:false;initial-value:0deg}
+.home-v2 .context-panel{padding-top:14px}
+.home-v2 .hello{margin-bottom:18px}
+.home-ask{margin:0 0 22px}
+.glow-wrap{position:relative;border-radius:22px;isolation:isolate}
+.glow-ring,.glow-halo{position:absolute;inset:-1.5px;border-radius:23px;pointer-events:none;background:conic-gradient(from var(--glow-a),#006dff 0deg,#7c5cff 70deg,#22c3ee 150deg,#ff7ad9 210deg,#006dff 290deg,#4f8dff 360deg);animation:glow-spin 9s linear infinite}
+.glow-ring{z-index:0;opacity:.55;transition:opacity .4s ease}
+.glow-halo{z-index:-1;inset:2px;filter:blur(16px);opacity:.28;transform:translateY(4px);transition:opacity .5s ease,filter .5s ease}
+.glow-wrap .prompt{position:relative;z-index:1;background:#fff;border:0;border-radius:21px;min-height:118px;box-shadow:0 1px 2px rgba(16,40,80,.04)}
+.glow-wrap .prompt:focus-within{box-shadow:none;border:0}
+.glow-wrap:focus-within .glow-ring{opacity:.95}
+.glow-wrap:focus-within .glow-halo{opacity:.5;filter:blur(20px)}
+.glow-wrap:hover .glow-halo{opacity:.38}
+@keyframes glow-spin{to{--glow-a:360deg}}
+@media(prefers-reduced-motion:reduce){.glow-ring,.glow-halo{animation:none}}
+.home-v2 .hero-insight.last-move{margin-top:2px}
+.home-v2 .home-ask{margin:0 0 26px!important}
+.home-v2 .context-panel{padding-bottom:20px}
+.home-v2 .home-quick{margin-top:22px}
+.home-v2 .products-panel{padding-top:22px}
