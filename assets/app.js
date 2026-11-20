@@ -197,7 +197,7 @@ const CREDIT_SCREENS={mortgage:mortgagePage,amort:amortPage,'amort-review':amort
 // Cada guion es una pequeña máquina de estados: cada paso dice algo (con datos reales), puede enseñar una tarjeta
 // y ofrece respuestas. Si la persona escribe, se intenta entender (importe, plazo, palabra clave de una respuesta);
 // si es otra cosa, se sale del guion hacia la intención que toque. Cada paso queda en la URL como ?paso=.
-const SCRIPT_TOPICS=['mortgage','loan','preapproved'];
+const SCRIPT_TOPICS=['mortgage','loan','preapproved','bizum'];
 const chip=(label,o)=>({label,...o});
 function mortgageCompare(A){const c=amortSim(A,'cuota'),p=amortSim(A,'plazo');return `<div class="answer-panel"><div class="answer-eyebrow">Si adelantas ${fmt(A)}</div><div class="mini-row"><span>Reducir cuota<span class="mini-sub">${fmt(mortgage().cuota)} → ${fmt(c.cuota)} al mes</span></span><strong>−${fmt(c.saved)}<span class="mini-sub">en intereses</span></strong></div><div class="mini-row"><span>Reducir plazo<span class="mini-sub">Acabas ${yearsMonths(p.less)} antes</span></span><strong style="color:#16835f">−${fmt(p.saved)}<span class="mini-sub">en intereses</span></strong></div><div class="mini-row"><span>Compensación</span><strong>${fmt(c.fee)}</strong></div></div>`}
 function loanCompare(A){return `<div class="answer-panel"><div class="answer-eyebrow">${fmt(A)} según el plazo</div>${[36,60,84].map(n=>{const r=loanSim(A,n);return `<div class="mini-row"><span>${n} meses<span class="mini-sub">Intereses: ${fmt(r.interest)}</span></span><strong>${fmt(r.cuota)}<span class="mini-sub">al mes</span></strong></div>`}).join('')}<div class="mini-row"><span>TIN · TAE</span><strong>${pct(LOAN.tin)} · ${pct(loanTae())}</strong></div></div>`}
@@ -253,8 +253,63 @@ const SCRIPTS={
   already:{say:()=>`Ya lo usaste: tienes un préstamo de ${fmt(state.loan.A)} a ${state.loan.n} meses.`,chips:()=>[chip('Ver mi préstamo',{act:'goto-loan',keys:['ver']})]}
  }}
 };
+
+// ── Bizum conversacional (V7.8) ──
+// Una pregunta por turno, se salta lo que ya sabe, las respuestas rápidas son frases y escribir siempre gana a tocar.
+// Cada fase tiene su URL (datos → revisión → completado) pero el hilo viaja en la sesión: se ve como una sola conversación.
+const CONTACTS=[{id:'marta',name:'Marta',full:'Marta Gil',tail:'482',keys:['marta']},{id:'paula',name:'Paula',full:'Paula Ríos',tail:'917',keys:['paula']},{id:'mama',name:'Mamá',full:'Mamá',tail:'305',keys:['mama','madre']}];
+const contactToWho=c=>({name:c.name,full:c.full,tail:c.tail,known:true});
+function findContact(t){const n=normq(t);return CONTACTS.find(c=>c.keys.some(k=>new RegExp('\\b'+k+'\\b').test(n)))||null}
+function findPhone(t){const d=String(t).replace(/\D/g,'').replace(/^34(?=\d{9}$)/,'');return /^[6-7]\d{8}$/.test(d)?d:null}
+function fmtPhone(d){return d.replace(/(\d{3})(\d{3})(\d{3})/,'$1 $2 $3')}
+function phoneWho(d){return {name:fmtPhone(d),full:fmtPhone(d),tail:d.slice(-3),known:false}}
+function bizumAmount(t,bare){const m=String(t).match(/(\d{1,5}(?:[.,]\d{1,2})?)\s*(?:€|eur\b|euros?\b)/i);let a=m?m[1]:null;if(!a&&bare&&!findPhone(t)){const all=[...String(t).matchAll(/(?:^|\s)(\d{1,5}(?:[.,]\d{1,2})?)(?=\s|$|[.,!?])/g)];if(all.length===1)a=all[0][1];}if(!a)return null;const x=parseAmount(a);return Number.isFinite(x)&&x>0?x:null}
+function nameFrom(t){const x=String(t).trim().replace(/^(a|para)\s+/i,'').replace(/[.!?¿¡]+$/,'');return /^[A-Za-zÁÉÍÓÚÑáéíóúñ][A-Za-zÁÉÍÓÚÑáéíóúñ ]{1,24}$/.test(x)&&!/\d/.test(x)?x.charAt(0).toUpperCase()+x.slice(1):null}
+const nextBizum=v=>!v.who?'ask-who':v.amount==null?'ask-amount':v.amount>money().online?'no-funds':'confirm';
+function bizumTicket(v,isLast,done){
+ const w=v.who||{name:'—',full:'—',tail:'···'},sending=!!(state.script&&state.script.sending);
+ const rows=`<div class="mini-row"><span>Desde</span><strong>Cuenta Online ····1048</strong></div><div class="mini-row"><span>${done?'Llegada':'Llega'}</span><strong>${done?'Ahora mismo':'Al momento'}</strong></div>${v.concept?`<div class="mini-row"><span>Concepto</span><strong>${esc(v.concept)}</strong></div>`:''}`;
+ if(done)return `<div class="bizum-ticket is-done"><div class="bt-check">${icon('check',24)}</div><div class="bt-amount">${fmt(v.amount)}</div><div class="bt-sub">enviados a ${esc(w.full)}</div><div class="bt-rows">${rows}</div></div>`;
+ return `<div class="bizum-ticket ${isLast?'':'is-old'}"><div class="bt-who"><span class="bt-avatar">${esc((w.name||'?').charAt(0))}</span><div><strong>${esc(w.full)}</strong><small>Bizum · ··· ··· ${esc(w.tail||'···')}</small></div></div><div class="bt-amount">${fmt(v.amount)}</div><div class="bt-rows">${rows}</div>${isLast?`<button class="button-primary bt-send" data-action="bizum-send" ${sending?'disabled':''}>${sending?'<span class="bt-spin" aria-hidden="true"></span>Enviando…':'Enviar '+fmt(v.amount).replace(',00','')}</button>`:''}</div>`;
+}
+const BIZUM_STEPS={start:v=>v.who?nextBizum(v):v.pending?'ask-phone':'ask-who',steps:{
+ 'ask-who':{route:'/bizum/datos',ph:'Nombre o teléfono',say:v=>v.amount?`Perfecto, ${fmt(v.amount).replace(',00','')}. ¿A quién se lo envío?`:'¿A quién se lo envío?',
+  chips:v=>[...CONTACTS.map(c=>chip(c.name,{go:nextBizum({...v,who:true}),set:{who:contactToWho(c)},keys:c.keys})),chip('Otro número',{go:'other-number',keys:['otro','numero','telefono']})]},
+ 'other-number':{route:'/bizum/datos',ph:'Nombre o teléfono',numeric:true,say:()=>'Escríbeme su nombre o su teléfono.',chips:()=>[chip('Elegir un contacto',{go:'ask-who',keys:['contacto','elegir']})]},
+ 'ask-phone':{route:'/bizum/datos',ph:'Teléfono (9 cifras)',numeric:true,say:v=>`No tengo a «${esc(v.pending||'esa persona')}» entre tus contactos de Bizum. Escríbeme su teléfono (9 cifras) y se lo envío.`,chips:()=>[chip('Elegir un contacto',{go:'ask-who',set:{pending:''},keys:['contacto','elegir']})]},
+ 'ask-amount':{route:'/bizum/datos',ph:'Importe en €',numeric:true,say:v=>`¿Cuánto le envías a ${esc(v.who.name)}?`,
+  chips:v=>[10,20,50].map(a=>chip(a+' €',{go:a>money().online?'no-funds':'confirm',set:{amount:a},keys:[String(a)]}))},
+ 'no-funds':{route:'/bizum/datos',ph:'Importe en €',numeric:true,say:v=>`En tu Cuenta Online tienes <strong>${hide(money().online)}</strong> y quieres enviar ${fmt(v.amount)}. Dime un importe menor, o traspasa antes dinero desde Ahorro.`,
+  chips:()=>[chip('Enviar menos',{go:'ask-amount',set:{amount:null},keys:['menos']}),chip('Cancelar',{act:'home',keys:['cancelar','inicio']})]},
+ 'confirm':{route:'/bizum/revision',ph:'Cambia algo o escribe otra cosa…',say:v=>`Lo tengo: <strong>${fmt(v.amount)}</strong> a <strong>${esc(v.who.name)}</strong> desde tu Cuenta Online.`,panel:(v,isLast)=>bizumTicket(v,isLast,false),
+  chips:v=>[chip('Cambiar importe',{go:'ask-amount',set:{amount:null},keys:['importe','cantidad']}),chip('Cambiar destinatario',{go:'ask-who',set:{who:null},keys:['destinatario','persona']}),chip(v.concept?'Cambiar concepto':'Añadir concepto',{go:'ask-concept',keys:['concepto']})]},
+ 'ask-concept':{route:'/bizum/revision',ph:'Concepto',say:()=>'¿Qué concepto le pongo?',
+  chips:()=>[...['Cena','Gracias','Alquiler'].map(c=>chip(c,{go:'confirm',set:{concept:c},keys:[normq(c)]})),chip('Sin concepto',{go:'confirm',set:{concept:''},keys:['sin','nada']})]},
+ 'sent':{route:'/bizum/completado',ph:'Pregunta o pide otra cosa…',say:v=>`Hecho. <strong>${esc(v.who.name)}</strong> ya lo tiene.`,panel:v=>bizumTicket(v,true,true),
+  chips:()=>[chip('Enviar otro Bizum',{act:'bizum-again',keys:['otro','bizum']}),chip('Ver mi cuenta',{act:'goto-account',keys:['cuenta','movimiento']}),chip('Volver al inicio',{act:'home',keys:['inicio','volver']})]}
+}};
+function bizumSeed(t){const f=state.form||{},v={who:null,pending:'',amount:null},c=findContact(t)||findContact(f.recipient||''),ph=findPhone(t);const a=bizumAmount(t,false)||(f.amount?parseAmount(f.amount):null);if(c)v.who=contactToWho(c);else if(ph)v.who=phoneWho(ph);else if(f.recipient&&nameFrom(f.recipient))v.pending=nameFrom(f.recipient);if(Number.isFinite(a)&&a>0)v.amount=a;return v}
+function bizumInput(q){
+ const s=state.script,v=s.v,st=s.step;
+ if(st==='sent')return false;
+ const c=findContact(q),ph=findPhone(q),amt=bizumAmount(q,['ask-amount','no-funds','confirm'].includes(st)),ns={};
+ if(st==='ask-phone'&&ph){ns.who={...phoneWho(ph),name:v.pending||phoneWho(ph).name,full:v.pending||phoneWho(ph).full};ns.pending='';}
+ else if(c)ns.who=contactToWho(c);
+ else if(ph)ns.who=phoneWho(ph);
+ if(amt!==null)ns.amount=amt;
+ if(st==='ask-concept')ns.concept=q.trim().slice(0,40);
+ else{const m=String(q).match(/concepto\s+(.+)$/i);if(m)ns.concept=m[1].trim().slice(0,40);}
+ if(!Object.keys(ns).length){
+  if(['ask-who','other-number'].includes(st)){const name=nameFrom(q);if(name&&name.split(' ').length<=2&&guess(q)==='other'&&!/\b(si|no|vale|ok|cancelar|inicio)\b/i.test(name)){s.v.pending=name;scriptAdvance(q,{go:'ask-phone'});return true;}}
+  return false;
+ }
+ Object.assign(v,ns);
+ scriptAdvance(q,{go:st==='ask-concept'?'confirm':nextBizum(v)});return true;
+}
+SCRIPTS.bizum=BIZUM_STEPS;
 function scriptInit(topic){
- const t=state.text||'',v={amount:null,purpose:null,months:null,mode:null,intent:null};
+ const t=state.text||'',v={amount:null,purpose:null,months:null,mode:null,intent:null,who:null,pending:'',concept:''};
+ if(topic==='bizum'){Object.assign(v,bizumSeed(t));if(ROUTE_PATH!=='/bizum/datos'){if(!v.who)v.who=contactToWho(CONTACTS[0]);if(v.amount==null)v.amount=20;}}
  if(topic==='loan'){const a=parseEuros(t);if(a&&a>=300)v.amount=a;v.purpose=purposeOf(t);v.months=monthsIn(t);}
  if(topic==='mortgage'){const s=normq(t);v.intent=/amortiz|adelantar/.test(s)?'amort':/euribor/.test(s)?'euribor':/menos cuota|bajar (la )?cuota|pagar menos/.test(s)?'lower':/llevo pagado|cuanto (me )?queda|pendiente/.test(s)?'paid':null;const a=parseEuros(t);if(a&&a>=1000)v.amount=a;}
  state.script={id:topic,turns:[{u:t||(texts[topic]||texts.other)[0]}],v,step:null};
@@ -272,7 +327,7 @@ function scriptAdvance(userLabel,c){
  if(c.set)Object.assign(s.v,c.set);
  if(c.act){scriptAct(c.act);return;}
  state.scriptTyping=true;renderChat();
- window.setTimeout(()=>{state.scriptTyping=false;scriptPushBot(c.go);renderChat();},prefersReducedMotion?0:650);
+ window.setTimeout(()=>{state.scriptTyping=false;scriptPushBot(c.go);const r=(SCRIPTS[s.id].steps[c.go]||{}).route;if(r&&r!==ROUTE_PATH){NEXT_DIR='fade';goto(r);}else renderChat();},prefersReducedMotion?0:650);
 }
 function scriptAct(act){
  const v=state.script.v;state.via='chat-boton';
@@ -281,11 +336,14 @@ function scriptAct(act){
  if(act==='goto-loan'){if(v.amount)state.sim.loanAmount=String(Math.min(v.amount,LOAN.max));if(v.months)state.sim.loanMonths=v.months;goto('/prestamo');return;}
  if(act==='goto-loan-review'){state.sim.loanAmount=String(v.amount);state.sim.loanMonths=v.months||60;state.sim.purpose=v.purpose||'';state.sim.secci=false;state.formError='';goto('/prestamo/revision');return;}
  if(act==='goto-savings'){detailOf('savings');return;}
+ if(act==='goto-account'){detailOf('account');return;}
+ if(act==='bizum-again'){journey('bizum',undefined,'chat-boton');return;}
  if(act==='human'){journey('human',undefined,'chat-boton');return;}
  if(act==='home'){navigate('home');return;}
 }
 function scriptInput(q){
  const s=state.script,sc=SCRIPTS[s.id],st=sc.steps[s.step]||{},n=normq(q);state.chatText='';state.refocus=true;
+ if(s.id==='bizum'&&bizumInput(q))return;
  if(st.expect==='amount'){const a=parseEuros(q);if(a){scriptAdvance(q,{go:s.id==='loan'&&a>LOAN.max?'too-much':st.next,set:{amount:a}});return;}}
  if(s.id==='loan'){const m=monthsIn(q);if(m&&s.v.amount){scriptAdvance(q,{go:'chosen',set:{months:m}});return;}const a=parseEuros(q);if(a&&a>=300&&['compare','chosen','ask-purpose','emergency'].includes(s.step)){scriptAdvance(q,{go:a>LOAN.max?'too-much':'compare',set:{amount:a}});return;}}
  const hit=scriptChips().find(c=>(c.keys||[]).some(k=>n.includes(k)));
@@ -299,16 +357,17 @@ function renderChat(){const el=root.querySelector('#scroller'),prev=el?el.scroll
 function botTurnHtml(turn,isLast){
  const sc=SCRIPTS[state.script.id];let say,panel='';
  if(turn.b==='__fallback'){say='No te he entendido del todo. Elige una de las opciones o escríbeme de otra forma.';}
- else{const st=sc.steps[turn.b];say=st.say(turn.v);panel=st.panel?st.panel(turn.v):'';}
+ else{const st=sc.steps[turn.b];say=st.say(turn.v);panel=st.panel?st.panel(turn.v,isLast):'';}
  const chips=isLast&&!state.scriptTyping?scriptChips():[];
  return `<div class="assistant-row turn ${isLast?'turn-enter':''}"><div class="assistant-avatar">${assistantDisc()}</div><div class="assistant-content"><div class="assistant-sign">Asistente digital · 9:41</div><div class="assistant-bubble"><p>${say}</p></div>${panel}${chips.length?`<div class="inline-actions">${chips.map((c,i)=>`<button class="inline-button ${c.primary?'is-primary':''}" data-action="sc-${i}">${esc(c.label)}</button>`).join('')}</div>`:''}</div></div>`;
 }
 function scriptChat(){
  if(!state.script||state.script.id!==state.topic)scriptInit(state.topic);
+ const curStep=(SCRIPTS[state.script.id].steps[state.script.step])||{};
  const turns=state.script.turns,lastBot=turns.map(t=>!!t.b).lastIndexOf(true);
  const body=turns.map((t,i)=>t.u!==undefined?`<div class="message-user turn ${i===turns.length-1?'turn-enter':''}"><div class="user-bubble">${esc(t.u)}</div></div>`:botTurnHtml(t,i===lastBot&&i===turns.length-1)).join('');
  const typing=state.scriptTyping?`<div class="assistant-row turn-enter"><div class="assistant-avatar">${assistantDisc()}</div><div class="assistant-content"><div class="typing" aria-label="El asistente está escribiendo"><span></span><span></span><span></span></div></div></div>`:'';
- return `${chatHeader()}<main class="main" id="scroller"><div class="chat"><div class="chat-kicker">Tu asistente</div>${(state.history||[]).map(h=>`<div class="message-user"><div class="user-bubble">${esc(h.text)}</div></div><div class="assistant-row" style="margin-bottom:20px;opacity:.75"><div class="assistant-avatar">${assistantDisc()}</div><div class="assistant-content"><div class="assistant-sign">Asistente digital · 9:41</div><div class="assistant-bubble"><p>${topicText(h.topic)}</p></div></div></div>`).join('')}${body}${typing}</div></main><div class="chat-composer"><label class="visually-hidden" for="chat-input">Escribir una respuesta</label><input type="text" id="chat-input" name="chatText" placeholder="Escribe tu respuesta…" value="${esc(state.chatText)}"/><button class="send" data-action="send-chat" aria-label="Enviar">${icon('send',18)}</button></div>`;
+ return `${chatHeader()}<main class="main" id="scroller"><div class="chat"><div class="chat-kicker">Tu asistente</div>${(state.history||[]).map(h=>`<div class="message-user"><div class="user-bubble">${esc(h.text)}</div></div><div class="assistant-row" style="margin-bottom:20px;opacity:.75"><div class="assistant-avatar">${assistantDisc()}</div><div class="assistant-content"><div class="assistant-sign">Asistente digital · 9:41</div><div class="assistant-bubble"><p>${topicText(h.topic)}</p></div></div></div>`).join('')}${body}${typing}</div></main><div class="chat-composer"><label class="visually-hidden" for="chat-input">Escribir una respuesta</label><input type="text" id="chat-input" name="chatText" placeholder="${esc(curStep.ph||'Escribe tu respuesta…')}" ${curStep.numeric?'inputmode="decimal"':''} enterkeyhint="send" autocomplete="off" value="${esc(state.chatText)}"/><button class="send" data-action="send-chat" aria-label="Enviar">${icon('send',18)}</button></div>`;
 }
 
 function chat(){if(SCRIPT_TOPICS.includes(state.topic))return scriptChat();const info=[(texts[state.topic]||texts.other)[0],topicText(state.topic)];const panel=state.topic==='security'?securityPanel():state.topic==='cover'?coverPanel():state.topic==='month'?monthPanel():state.topic==='human'?humanPanel():state.topic==='balance'?balancePanel():state.topic==='payments'?paymentPanel():state.topic==='spending'?spendingPanel():state.topic==='cards'?cardsPanel():state.topic==='bizum'||state.topic==='transfer'?(state.stage==='form'?flowForm():state.stage==='review'?flowReview():flowSuccess()):`<div class="inline-actions">${pill('Ver mis saldos','balance','wallet')}${pill('Próximos pagos','payments','calendar')}${pill('Enviar Bizum','bizum','phone')}${pill('Transferencia','transfer','swap')}${pill('Hablar con una persona','human','user')}</div>`;return `${chatHeader()}<main class="main" id="scroller"><div class="chat"><div class="chat-kicker">Tu asistente</div>${(state.history||[]).map(h=>`<div class="message-user"><div class="user-bubble">${esc(h.text)}</div></div><div class="assistant-row" style="margin-bottom:20px;opacity:.75"><div class="assistant-avatar">${assistantDisc()}</div><div class="assistant-content"><div class="assistant-sign">Asistente digital · 9:41</div><div class="assistant-bubble"><p>${topicText(h.topic)}</p></div></div></div>`).join('')}<div class="message-user"><div class="user-bubble">${esc(state.text||info[0])}</div></div><div class="assistant-row"><div class="assistant-avatar">${assistantDisc()}</div><div class="assistant-content"><div class="assistant-sign">Asistente digital · 9:41</div><div class="assistant-bubble"><p>${info[1]}</p></div>${panel}</div></div></div></main><div class="chat-composer"><label class="visually-hidden" for="chat-input">Escribir una consulta</label><input type="text" id="chat-input" name="chatText" placeholder="Pregunta o pide otra cosa..." value="${esc(state.chatText)}"/><button class="send" data-action="send-chat" aria-label="Enviar">${icon('send',18)}</button></div>`}
@@ -473,6 +532,7 @@ function trailOnGoto(path,isBack){
  const ts=(ROUTES[path]||{}).screen;
  if(TAB_SCREENS.includes(ts)){state.trail=[];return;}
  if(isBack){const t=state.trail||[];if(t[t.length-1]===path)state.trail=t.slice(0,-1);return;}
+ if(flowOf(path)==='bizum'&&flowOf(ROUTE_PATH)==='bizum')return;
  if(['splash','login'].includes(state.screen))return;
  state.trail=[...(state.trail||[]),ROUTE_PATH].slice(-20);
 }
@@ -551,7 +611,9 @@ function journey(topic,query,via){
  state.script=null;state.scriptTyping=false;
  state.topic=topic;state.text=query||'';state.stage='form';state.form={...defaultForm};state.formError='';state.query='';state.chatText='';state.toast='';
  prefillsFromQuery(topic,query||'');
- goto(TOPIC_ROUTES[topic]||TOPIC_ROUTES.other);
+ let dest=TOPIC_ROUTES[topic]||TOPIC_ROUTES.other;
+ if(topic==='bizum'){const sd=bizumSeed(query||'');dest=(BIZUM_STEPS.steps[BIZUM_STEPS.start(sd)]||{}).route||dest;}
+ goto(dest);
 }
 function navigate(screen){
  state.via='';state.history=[];
@@ -622,6 +684,7 @@ function handleAct(a){
  if(a==='loan-edit'){NEXT_DIR='back';goto('/prestamo');return;}
  if(a==='loan-ask'){const A=parseAmount(state.sim.loanAmount)||6000;journey('loan',`Tengo dudas con ${fmt(A).replace(',00','')} a ${state.sim.loanMonths} meses`);return;}
  if(a==='loan-dismiss'){state.offerDismissed=true;state.toast='No volveremos a mostrarte esta oferta en Productos.';NEXT_DIR='back';goto('/productos');return;}
+ if(a==='bizum-send'){const sc=state.script;if(!sc||sc.id!=='bizum'||sc.step!=='confirm'||sc.sending)return;sc.sending=true;renderChat();window.setTimeout(()=>{sc.sending=false;scriptPushBot('sent');NEXT_DIR='fade';goto('/bizum/completado');},prefersReducedMotion?0:900);return;}
  if(a.startsWith('fill-')){const t=a.slice(5);state.query=PILL_TEXT[t]||'';state.pillFill=state.query;state.toast='';render();const ta=root.querySelector('#home-prompt');if(ta){ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);}return;}
  if(a.startsWith('journey-')){journey(a.slice(8));return;}
  if(a.startsWith('nav-')){let t=a.slice(4);navigate(t==='operar'?'operations':t);return;}

@@ -626,3 +626,19 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:none;box
 .ask-box input{flex:1;min-width:0;height:40px;border:0;background:transparent;font-size:16px;color:var(--g-content-default,#111);outline:none}
 .ask-box input::placeholder{color:var(--g-content-soft,#737373)}
 .ask-box .prompt-round,.ask-box .send{flex:none}
+
+/* ── V7.8 · Bizum conversacional ── */
+.bizum-ticket{margin-top:10px;border:1px solid var(--g-border-soft,#d5dbe2);border-radius:var(--g-radius-lg,16px);background:#fff;padding:16px}
+.bizum-ticket.is-old{opacity:.65}
+.bt-who{display:flex;align-items:center;gap:12px}
+.bt-avatar{width:40px;height:40px;border-radius:50%;background:#e6f0ff;color:#006dff;font-weight:700;display:grid;place-items:center;flex:none}
+.bt-who strong{display:block;font-size:15px;line-height:20px}
+.bt-who small{display:block;font-size:12px;color:#646464}
+.bt-amount{font-size:34px;line-height:40px;font-weight:700;margin:14px 0 6px;letter-spacing:-.4px}
+.bt-sub{color:#646464;font-size:14px;margin-bottom:6px}
+.bt-check{width:44px;height:44px;border-radius:50%;background:#e4f6ee;color:#15946d;display:grid;place-items:center}
+.bizum-ticket.is-done .bt-amount{margin-top:12px}
+.bt-send{width:100%;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px}
+.bt-send[disabled]{opacity:.85;cursor:progress}
+.bt-spin{width:16px;height:16px;border:2px solid #ffffff80;border-top-color:#fff;border-radius:50%;animation:btspin .7s linear infinite}
+@keyframes btspin{to{transform:rotate(360deg)}}

@@ -173,3 +173,13 @@ alternativas se muestran aunque no sean un producto del banco.
 **Asistente en el centro**
 - Barra de pregunta fija sobre la navegación en Mi dinero, Productos, Contratar y pantallas de detalle, con placeholder contextual («Pregunta sobre tu hipoteca…»).
 - Las pills del inicio escriben en la caja en vez de abrir la pantalla: «Quiero enviar un Bizum a …», «¿Cuánto dinero tengo?». `?pills=directo` restaura el comportamiento anterior para comparar celdas en UserZoom.
+
+
+## V7.8 · Bizum conversacional
+El Bizum deja de ser un formulario dentro del chat: una pregunta por turno, se salta lo que ya sabe y todo se puede tocar o escribir.
+- **Rellenar huecos:** «Envía 25 € a Paula» salta directo al resumen; «Bizum a Lucía» (no es contacto) pide el teléfono; sin destinatario ni importe, pregunta uno detrás de otro.
+- **Respuestas rápidas = frases:** contactos recientes (simulados: Marta, Paula, Mamá) + «Otro número»; importes 10, 20 y 50 €. Al tocar una se convierte en tu burbuja.
+- **Resumen en el hilo:** tarjeta con nombre completo, teléfono enmascarado, importe y un único botón «Enviar». Se corrige escribiendo («mejor 30», «no, a Paula») o con los chips; el concepto es opcional («Añadir concepto»). Solo se envía con el botón.
+- **Sin saldo suficiente:** lo dice en el hilo y ofrece enviar menos o cancelar.
+- **URLs:** `/bizum/datos` (preguntas), `/bizum/revision` (resumen), `/bizum/completado` (recibo). El hilo viaja en la sesión y «atrás» vuelve al origen. `via` no cambia.
+- La transferencia sigue con el formulario anterior.
