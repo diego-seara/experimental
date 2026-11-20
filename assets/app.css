@@ -1214,3 +1214,13 @@ div.acc-row:hover{background:#fff}
 .promo-scroll,.contract-reco{scroll-padding-inline:16px}
 .promo-scroll>*:first-child,.contract-reco>*:first-child{margin-left:0}
 .promo-scroll::after,.contract-reco::after{content:"";flex:0 0 1px}
+/* V7.21 Insight como voz del asistente */
+.ins-assist{display:flex;gap:10px;align-items:flex-start;margin:0 0 20px}
+.ins-disc{flex:none;margin-top:2px;animation:bzf-pop .45s cubic-bezier(.34,1.56,.64,1) .1s both}
+.ins-disc .assistant-disc{width:26px;height:26px}
+.ins-body{flex:1;min-width:0}
+.home-v2 .ins-body .hero-insight{margin:0!important}
+.home-v2 .hello{margin-bottom:10px}
+.ins-body .insight-indicator{display:none}
+.ins-assist:has(.warn) .assistant-disc{box-shadow:0 0 0 2px #fafafa,0 0 0 4px #f0a500}
+.ins-assist:has(.danger) .assistant-disc{box-shadow:0 0 0 2px #fafafa,0 0 0 4px #c62828}

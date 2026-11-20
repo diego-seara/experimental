@@ -264,3 +264,6 @@ Todo con el mismo motor que el Bizum conversacional (guion por pasos, chips, tex
 - Gris = conversación: saludo → insight (el asistente te recibe) → caja con resplandor para contestarle.
 - Blanco = operativa: atajos → Tus productos → Te puede interesar.
 - Carruseles de Inicio y Contratar con 16 px de margen a ambos lados también al deslizar (scroll-padding).
+
+## V7.21 — El insight habla con la voz del asistente
+- Disco del asistente junto al insight de Inicio (último movimiento, luz, fraude). En luz/fraude el aviso de gravedad pasa a un anillo ámbar/rojo alrededor del disco (sin punto duplicado).
