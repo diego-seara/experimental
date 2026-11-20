@@ -278,3 +278,11 @@ Todo con el mismo motor que el Bizum conversacional (guion por pasos, chips, tex
 ## V7.23 — Bizum conversacional: agenda del móvil
 - Si el nombre no está entre los contactos de Bizum: "Indícame su número de móvil o búscalo en tu agenda" + atajo **"Buscar a X en la agenda"** (la búsqueda llega ya rellenada) y "Es otra persona".
 - Agenda: contactos con Bizum (seleccionables), sin Bizum (desactivados) y **Nuevo contacto** (vuelve al chat para escribir el móvil). Nueva contacto de ejemplo: Amalia Vidal.
+
+## V7.24 — Auditoría completa (prioridad: Bizum y transferencia)
+Rastreo automático de todas las rutas y botones (sin errores de JS; los "sin efecto" eran falsos positivos: enviar vacío, opción ya seleccionada) + pruebas de casos límite del escenario principal. Arreglado:
+- **Bizum conversacional**: entiende importes sin "€" ("bizum de 50 a Pau", "mándale 15 a Marta"), importes con miles ("1.500"), móvil junto a importe ("bizum a 666111222 de 10"), concepto en la primera frase ("…concepto excursión"), posesivos («tu hijo»). **Máximo 1.000 € por Bizum** también en conversacional (como el formulario), con salida "Enviar 1.000 €" / "Hacerlo por transferencia".
+- **Transferencia conversacional**: importe junto a IBAN ("transfiere 50 a ES90…"), nombre nuevo → pide su IBAN ("transferencia a Juan Pérez").
+- **Cuentas y Tarjetas** recuperan la barra inferior (como Tus productos); "Sacar dinero" de Cuentas vuelve a abrir Operar.
+- **Fraude**: el pago retenido de 349 € aparece en los movimientos de la débito (no suma al gasto) y abre la revisión.
+- El asistente de seguridad sabe si la tarjeta está apagada. "Ver tarjeta" del aviso de bloqueo abre Tarjetas. "Cuenta Ahorro" con mayúscula en todo el proto.
