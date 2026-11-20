@@ -206,3 +206,10 @@ El Bizum deja de ser un formulario dentro del chat: una pregunta por turno, se s
   - `/operar/bizum/enviado` → confirmación (Ver movimiento / Hacer otro Bizum / Ir a Inicio)
 - `via=operar` en las tres URLs. El conversacional sigue en `/bizum/…` (caja, pills, chat).
 - El Bizum enviado por formulario descuenta saldo y aparece en movimientos igual que el conversacional.
+
+## V7.13 — Inicio nuevo
+- Cabecera gris: saludo + insight "Tu último movimiento es un pago de 56,99 € en Nike ↗ con tu tarjeta *5566" (si se ha enviado un Bizum, el último movimiento pasa a ser ese). Los escenarios warning/fraud siguen sustituyendo al insight.
+- 4 atajos: Enviar Bizum (formulario, `via=atajo`), Transferencia nacional, Sacar dinero (no disponible), Límites de tarjeta.
+- Tus productos con miniaturas (cuenta €, tarjeta Sabadell VISA). El prompt baja al final y desaparecen las pills.
+- Tarjeta renumerada a *5566 en todo el proto; Nike es el último movimiento.
+- Provisional: el enlace del insight abre el detalle de la tarjeta (o de la cuenta si el último movimiento es un Bizum) hasta tener el detalle de movimiento.

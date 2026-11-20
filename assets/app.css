@@ -788,3 +788,27 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:none;box
 .sig-cancel{min-height:36px;background:transparent;color:#006dff;font-weight:700;font-size:14px;padding:6px 16px}
 @media(prefers-reduced-motion:reduce){.sig-pill,.sig-ok,.sig-sheet,.bzf-agenda,.bzf-avatar{animation:none!important;transition:none!important}}
 .bzf-input input:focus-visible,.bzf-ag-search input:focus-visible{outline:0}
+/* V7.13 Inicio nuevo */
+.home-v2 .context-panel{padding-bottom:26px}
+.home-v2 .hero-insight.last-move p{margin:0;font-size:17px;line-height:30px;color:#000}
+.move-link{background:transparent;padding:0;font:inherit;color:#000;border-bottom:2px dotted #000;line-height:26px;cursor:pointer}
+.move-link span{font-size:.85em;color:#333}
+.move-link:hover{color:#006dff;border-color:#006dff}
+.home-quick{display:grid;grid-template-columns:repeat(4,1fr);margin:26px -8px 0}
+.home-quick .oper-circle{width:44px;height:44px;background:transparent}
+.home-quick .oper-label{font-size:13px;line-height:16px;color:#000}
+.hq-swap{color:#006dff;display:flex}
+.home-v2 .products-panel{border-top:0;padding-top:28px}
+.pt-v2{min-height:0;gap:6px;padding:12px 14px 14px;background:#fff;border:1px solid #e0e0e0;border-radius:16px;box-shadow:0 2px 8px -1px rgba(0,0,0,.06)}
+.pt-v2:hover{background:#f8fbff}
+.pt-top{display:flex;justify-content:space-between;align-items:flex-start;color:#646464;margin-bottom:6px}
+.pt-thumb{display:block;width:62px;height:40px;border-radius:5px;position:relative;box-shadow:0 3px 6px -2px rgba(0,0,0,.18)}
+.pt-acc{background:linear-gradient(180deg,#fafafa,#f0f0f0);display:flex;align-items:flex-end;justify-content:flex-end;padding:0 9px 6px}
+.pt-acc span{font-size:17px;font-weight:700;color:#000;line-height:1}
+.pt-card{background:radial-gradient(120% 90% at 100% 110%,#000 45%,#1d1d1d 46%) ,#141414;color:#fff;padding:6px 6px}
+.pt-card-logo{display:flex;align-items:center;gap:2px;font-size:7px;font-weight:700;letter-spacing:-.1px}
+.pt-card-visa{position:absolute;right:6px;bottom:5px;font-size:8px;font-weight:800;font-style:italic;letter-spacing:.2px}
+.pt-v2 .tile-title{display:flex;align-items:center;gap:7px;font-size:15px;color:#000}
+.pt-v2 .tile-money{font-size:19px;font-weight:500;color:#000;margin-top:2px}
+.tile-sub{font-size:12.5px;color:#646464;margin-top:6px}
+.home-v2 .conversation-panel{padding-top:8px;padding-bottom:26px}
