@@ -1010,3 +1010,45 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:none;box
 .sig-big-t{font-size:22px!important}
 .sig-layer.closing .sig-sheet{animation:sig-down .24s ease both}
 .no-anim .sig-sheet,.no-anim .sig-scrim{animation:none}
+/* V7.16 cifras conciliadas */
+.pt-cards{box-shadow:none;width:66px;height:44px}
+.ptc{position:absolute;width:56px;height:36px;border-radius:5px;box-shadow:0 3px 6px -2px rgba(0,0,0,.25)}
+.ptc-back{right:0;top:0;background:#212121}
+.ptc-front{left:0;bottom:0;background:#0032a0;color:#fff;padding:5px 6px}
+.ptc-front .pt-card-visa{right:5px;bottom:4px}
+.tile-warn{color:#8a5a00;font-weight:600}
+.movement-icon.has-av{background:transparent;padding:0}
+.mvl-av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:14px}
+.mvl-av.mv-av-bizum svg{width:13px;height:17px}
+/* V7.16 Cuentas */
+.acc-top{padding-bottom:20px}
+.cards-title{display:flex;align-items:baseline;justify-content:space-between}
+.acc-total{font-size:14px;color:#646464}
+.acc-car .cards-slide{height:161px}
+.ac{width:310px;height:161px;background:#fff;border:1px solid #e0e0e0;border-radius:16px;box-shadow:0 2px 8px -1px rgba(0,0,0,.08);padding:16px 16px 14px;display:flex;flex-direction:column;align-items:flex-start}
+.ac-name{margin:0;font-size:18px;line-height:24px;font-weight:600}
+.ac-bal{margin:8px 0 4px;font-size:24px;line-height:32px}
+.ac-bal small,.ac-bal em{font-size:18px;font-style:normal}.ac-bal em{padding-left:4px}
+.ac-iban{display:flex;align-items:center;gap:6px;background:transparent;color:#646464;font-size:14px;padding:6px 0;border-radius:4px}
+.ac-iban:hover{color:#000}
+.ac-more{margin-top:auto;background:transparent;color:#0163e8;font-size:14px;padding:0}
+.acc-aviso{margin:4px 16px 0;display:flex;gap:10px;background:#fff;border:1px solid #e0e0e0;border-radius:16px;padding:16px;box-shadow:0 2px 10px -1px rgba(0,0,0,.08)}
+.acc-aviso p{margin:0;font-size:16px;line-height:24px}
+.acc-aviso button{background:transparent;color:#0163e8;font-size:17px;padding:6px 0 0}
+.acc-av-ic{width:32px;height:32px;border-radius:50%;background:#eef4ff;color:#006dff;display:grid;place-items:center;flex:none}
+.acc-av-ic.warn{background:#fff1d6;color:#8a5a00}
+.acc-badge{display:inline-block;width:8px;height:8px;border-radius:50%;background:#fc00f4;margin-left:6px;vertical-align:4px;box-shadow:0 0 0 2px #fff}
+.acc-row .mvl-av{width:32px;height:32px;font-size:13px;flex:none;margin-top:2px}
+.acc-row .mvl-av svg{max-width:16px}
+.cm-sub2{font-size:14px}
+.acc-runbal{color:#646464;font-size:14px;white-space:nowrap}
+div.acc-row{cursor:default}
+div.acc-row:hover{background:#fff}
+.acc-up-note{margin:2px 16px 6px;font-size:13.5px;color:#646464;background:#f6f8fb;border-radius:10px;padding:8px 12px}
+.acc-more{background:#fff}
+.acc-more.no-anim{animation:none}
+.acc-more-body{flex:1;overflow:auto;padding:8px 0 24px}
+.acc-more-body h3{margin:20px 16px 8px;font-size:20px;line-height:28px;font-weight:600}
+.acc-more-list button{width:100%;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#fff;border-bottom:1px solid #eee;font-size:16px;text-align:left;color:#000}
+.acc-more-list button svg{color:#006dff}
+.acc-more-list button:hover{background:#fafafa}

@@ -231,3 +231,13 @@ Réplica de `movement-detail` / `card-payment-detail` del proto original.
 - Movimientos: pestañas Todos/Fraccionar (>50 €), buscador, agrupados, esqueleto de carga al cambiar de tarjeta. Cada movimiento abre su detalle (`/movimientos/nike` o `/movimientos/tarjeta`).
 - "Límites de tarjeta" (atajo de Inicio y sheet de Operar) abre Tarjetas con la hoja de límites.
 - Sin función en la prueba: Instant money, Más opciones, Forma de pago, Cartera de Apple.
+
+## V7.16 — Cifras conciliadas + Cuentas (del proto original)
+**Una sola fuente de datos.** Los movimientos de las tarjetas mandan:
+- Gasto con tarjeta = suma de movimientos (débito 326,80 € + crédito 324,39 € = 651,19 €). Lo usan Inicio, Tarjetas y el asistente.
+- La Cuenta Online lista los cargos reales de la débito (mismos nombres, fechas e importes), el Bizum a Marta, los Bizum enviados y la nómina.
+- Próximos pagos de la Cuenta Online: Movistar 55,50 · Iberdrola 87 · nómina +1.850 · Mapfre 147,50 · alquiler 950 (recibos hasta el día 30 = 1.240 €, igual que la previsión) · liquidación de la crédito el 1 dic.
+- Tarjeta "Tarjetas" de Inicio: 651,19 € · "2 tarjetas · gastado este mes", miniatura de las dos tarjetas reales (azul + negra). Si alguna está apagada, lo dice en ámbar.
+- El asistente (consulta de tarjetas) da el gasto por tarjeta y el último movimiento real (Nike).
+
+**Cuentas** (`/cuentas/online`, `/cuentas/ahorro`): carrusel de cuentas con saldo, IBAN copiable y "Ver detalle" (titular, IBAN, BIC, condiciones); acciones Enviar Bizum (formulario, `via=cuentas`), Enviar dinero, Sacar dinero (abre Operar), Más opciones (hoja completa del original); aviso de cuenta (extracto, o la luz en `?scenario=warning`); pestañas Todos (con saldo tras cada movimiento) / Próximos; buscador y esqueleto de carga. Los movimientos de tarjeta y Bizum abren su detalle.
