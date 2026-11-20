@@ -241,3 +241,11 @@ Réplica de `movement-detail` / `card-payment-detail` del proto original.
 - El asistente (consulta de tarjetas) da el gasto por tarjeta y el último movimiento real (Nike).
 
 **Cuentas** (`/cuentas/online`, `/cuentas/ahorro`): carrusel de cuentas con saldo, IBAN copiable y "Ver detalle" (titular, IBAN, BIC, condiciones); acciones Enviar Bizum (formulario, `via=cuentas`), Enviar dinero, Sacar dinero (abre Operar), Más opciones (hoja completa del original); aviso de cuenta (extracto, o la luz en `?scenario=warning`); pestañas Todos (con saldo tras cada movimiento) / Próximos; buscador y esqueleto de carga. Los movimientos de tarjeta y Bizum abren su detalle.
+
+## V7.17 — Saldos, pagos y transferencia conversacionales + paso a una persona
+Todo con el mismo motor que el Bizum conversacional (guion por pasos, chips, texto libre, rutas medibles).
+- **Saldos** (`/conversacion/saldo`): saldos reales por cuenta y total → "¿En qué me lo he gastado?" (las 5 compras que más pesan entre las dos tarjetas), Pasar dinero a Ahorro, Próximos pagos, Ver mis cuentas.
+- **Próximos pagos** (`/conversacion/pagos`): recibos de los próximos 7 días + resumen hasta el 30 (+1.850 / −1.240) → "¿Me llega?" calcula el saldo a fin de mes (en `?scenario=warning` detecta que faltan 23 € y ofrece cubrirlo).
+- **Transferencia** (`/transferencia/datos` → `/revision` → `/completada`): entiende "pásale 950 al casero", "pasa 100 € a mi ahorro" o un IBAN. Agenda con IBAN (Inmobiliaria Sol, Mamá, Cuenta Ahorro). IBAN validado con dígito de control; aviso de "primera vez a esta cuenta". Inmediata/normal (gratis). **Firma con deslizador**. Descuenta saldo, aparece en movimientos (y en Ahorro si es un traspaso) y en el insight de Inicio.
+- **Hablar con una persona** (`/conversacion/persona`), como el original: tarjeta con el resumen que se le pasa (motivo, lo hecho, lo pendiente, sacado de la conversación) → Hablar con un especialista / Prefiero que me llamen / Seguir con el asistente. Conexión → "Te paso con Javier, de Atención al cliente" → la cabecera cambia a la persona, que lee el caso, escribe y responde (guion simulado). Tarjetas/fraude → Lucía Ferrer (Equipo de Tarjetas). Llamada con franjas. `?persona=no` = nadie disponible por chat, solo llamada.
+- **"No sé hacerlo"**: el primer atajo es Hablar con una persona, con lo que escribió el usuario como motivo.

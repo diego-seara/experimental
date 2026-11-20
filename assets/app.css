@@ -1052,3 +1052,48 @@ div.acc-row:hover{background:#fff}
 .acc-more-list button{width:100%;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#fff;border-bottom:1px solid #eee;font-size:16px;text-align:left;color:#000}
 .acc-more-list button svg{color:#006dff}
 .acc-more-list button:hover{background:#fafafa}
+/* V7.17 conversacional */
+.conv-panel{padding:6px 14px 4px}
+.conv-panel .mini-row{align-items:center}
+.conv-total{font-weight:700}
+.conv-mrow{display:flex;align-items:center;gap:10px}
+.conv-mrow .cm-av{width:28px;height:28px;font-size:12px;margin:0}
+.conv-sum{display:flex;justify-content:space-between;gap:8px;border-top:1px solid #edf0f4;padding:11px 0 8px;font-size:12.5px;color:#4a5566}
+.conv-sum b{color:#000}.conv-sum b.pos{color:#008626}
+.pill-primary{background:#006dff;color:#fff;border-color:#006dff}.pill-primary svg{color:#fff}
+.pill-primary:hover{background:#0058d5}
+.tr-av{background:#e6f0ff;color:#006dff}
+.tr-warn{display:flex;gap:8px;align-items:flex-start;background:#fff6e5;border:1px solid #f3c46b;border-radius:10px;padding:9px 11px;font-size:12.5px;line-height:1.4;color:#5e4100;margin:0 0 10px}
+.tr-warn svg{flex:none;margin-top:1px}
+/* Persona */
+.esc-card{background:#fff;border:1px solid #e0e0e0;border-radius:16px;padding:14px;margin-top:12px;box-shadow:0 2px 8px -1px rgba(0,0,0,.06)}
+.esc-head{display:flex;align-items:flex-start;gap:10px}
+.esc-ic{width:36px;height:36px;border-radius:50%;background:#eef4ff;color:#006dff;display:grid;place-items:center;flex:none}
+.esc-ht{flex:1;min-width:0;display:flex;flex-direction:column}
+.esc-ht small{font-size:11.5px;color:#646464}.esc-ht strong{font-size:15.5px}.esc-ht span{font-size:12.5px;color:#646464}
+.esc-tag{font-size:11.5px;font-weight:600;color:#0050c8;border:1px solid #8fb8ff;border-radius:12px;padding:2px 9px;white-space:nowrap}
+.esc-lead{font-size:13px;color:#646464;margin:12px 0 8px}
+.esc-sum{background:#f7f9fc;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.esc-sum small{display:block;font-size:11.5px;color:#646464;margin-bottom:2px}
+.esc-sum p{margin:0;font-size:13.5px;line-height:1.4}
+.esc-sum ul{margin:0;padding-left:18px;font-size:13.5px;line-height:1.45}
+.esc-unav{display:flex;gap:9px;margin-top:10px;background:#fff6e5;border:1px solid #f3c46b;border-radius:12px;padding:10px 12px;color:#5e4100}
+.esc-unav strong{display:block;font-size:13.5px}.esc-unav span{font-size:12.5px;line-height:1.4}
+.esc-unav svg{flex:none;margin-top:2px}
+.esc-conn{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:13px;color:#646464}
+.esc-spin{position:static;opacity:1;transform:none;width:18px;height:18px;border-color:#cfe0ff;border-top-color:#006dff;animation:sig-rot .8s linear infinite}
+.esc-det{margin-top:10px}
+.esc-det summary{cursor:pointer;color:#0163e8;font-size:13.5px;list-style:none;display:flex;align-items:center;gap:6px}
+.esc-det summary::-webkit-details-marker{display:none}
+.esc-det summary:after{content:"";width:7px;height:7px;border-right:1.6px solid #0163e8;border-bottom:1.6px solid #0163e8;transform:rotate(45deg) translateY(-2px);transition:transform .2s}
+.esc-det[open] summary:after{transform:rotate(-135deg)}
+.esc-det .esc-sum{margin-top:8px}
+.esc-cb{display:flex;flex-direction:column;gap:8px;margin-top:12px;background:#f7f9fc;border-radius:12px;padding:12px}
+.esc-cb small{display:block;font-size:11.5px;color:#646464}.esc-cb strong{font-size:14px}
+.agent-av{width:27px;height:27px;border-radius:50%;color:#fff;display:grid;place-items:center;font-size:11px;font-weight:700;flex:none;box-shadow:0 0 0 2px #fff}
+.chatbar.is-agent .agent-av{width:36px;height:36px;font-size:13px}
+.agent-av.sm{width:22px;height:22px;font-size:9.5px}
+.agent-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#16a34a;margin-right:5px;vertical-align:1px}
+.assistant-row.is-agent .assistant-bubble{background:#f4f1fb;border-color:#e4dcf5}
+.agent-reading{display:flex;align-items:center;gap:8px;justify-content:center;font-size:12.5px;color:#646464;margin:14px 0}
+.chatbar.is-agent{animation:oper-fade .35s ease both}
