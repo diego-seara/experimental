@@ -257,7 +257,7 @@ const SCRIPTS={
 // ── Bizum conversacional (V7.8) ──
 // Una pregunta por turno, se salta lo que ya sabe, las respuestas rápidas son frases y escribir siempre gana a tocar.
 // Cada fase tiene su URL (datos → revisión → completado) pero el hilo viaja en la sesión: se ve como una sola conversación.
-const CONTACTS=[{id:'marta',name:'Marta',full:'Marta Gil',tail:'482',keys:['marta']},{id:'paula',name:'Paula',full:'Paula Ríos',tail:'917',keys:['paula']},{id:'mama',name:'Mamá',full:'Mamá',tail:'305',keys:['mama','madre']}];
+const CONTACTS=[{id:'marta',name:'Marta AMPA cole',full:'Marta AMPA cole',tail:'482',keys:['marta','ampa']},{id:'pau',name:'Pau Seara',full:'Pau Seara',tail:'917',keys:['pau']},{id:'mama',name:'Mamá',full:'Mamá',tail:'305',keys:['mama','madre']}];
 const contactToWho=c=>({name:c.name,full:c.full,tail:c.tail,known:true});
 function findContact(t){const n=normq(t);return CONTACTS.find(c=>c.keys.some(k=>new RegExp('\\b'+k+'\\b').test(n)))||null}
 function findPhone(t){const d=String(t).replace(/\D/g,'').replace(/^34(?=\d{9}$)/,'');return /^[6-7]\d{8}$/.test(d)?d:null}
