@@ -213,3 +213,10 @@ El Bizum deja de ser un formulario dentro del chat: una pregunta por turno, se s
 - Tus productos con miniaturas (cuenta €, tarjeta Sabadell VISA). El prompt baja al final y desaparecen las pills.
 - Tarjeta renumerada a *5566 en todo el proto; Nike es el último movimiento.
 - Provisional: el enlace del insight abre el detalle de la tarjeta (o de la cuenta si el último movimiento es un Bizum) hasta tener el detalle de movimiento.
+
+## V7.14 — Detalle de movimiento (Nike y Bizum)
+Réplica de `movement-detail` / `card-payment-detail` del proto original.
+- `/movimientos/nike`: compra con tarjeta. Mapa (Serrano, Madrid) con píldora de ubicación, avatar, importe, categoría, fecha, tarjeta. Acciones: Fraccionar, Dividir con Bizum, No reconozco este pago, Compartir. Detalle (concepto, tarjeta, cuenta + "Mostrar más"), Notas editables, Histórico.
+- `/movimientos/bizum`: Bizum enviado (el último enviado, o el sembrado a Marta AMPA cole de 15 €). Acciones: Fraccionar, Dividir, **Ver documento** (justificante "Mensaje SEPA · Bizum") y Compartir. Detalle con destinatario, justificante, cuenta y titular.
+- Asistente digital al pie: entra plegado (píldora sticky con "Ver"), se despliega al llegar al final o al tocarlo; chips contextuales. "Repetir este envío" entra al Bizum conversacional ya relleno (`via=movimiento`).
+- Entradas: enlace del insight de Inicio, filas Nike/Bizum de Mi dinero y Cuenta, "Ver movimiento" tras el Bizum por formulario.

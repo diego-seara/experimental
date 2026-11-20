@@ -34,6 +34,14 @@
       "destination": "/pages/operar.html"
     },
     {
+      "source": "/movimientos/nike",
+      "destination": "/pages/movimientos-nike.html"
+    },
+    {
+      "source": "/movimientos/bizum",
+      "destination": "/pages/movimientos-bizum.html"
+    },
+    {
       "source": "/operar/bizum",
       "destination": "/pages/operar-bizum.html"
     },
