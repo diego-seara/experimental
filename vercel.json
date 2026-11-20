@@ -42,6 +42,10 @@
       "destination": "/pages/movimientos-bizum.html"
     },
     {
+      "source": "/movimientos/tarjeta",
+      "destination": "/pages/movimientos-tarjeta.html"
+    },
+    {
       "source": "/operar/bizum",
       "destination": "/pages/operar-bizum.html"
     },

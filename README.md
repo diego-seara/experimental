@@ -220,3 +220,14 @@ Réplica de `movement-detail` / `card-payment-detail` del proto original.
 - `/movimientos/bizum`: Bizum enviado (el último enviado, o el sembrado a Marta AMPA cole de 15 €). Acciones: Fraccionar, Dividir, **Ver documento** (justificante "Mensaje SEPA · Bizum") y Compartir. Detalle con destinatario, justificante, cuenta y titular.
 - Asistente digital al pie: entra plegado (píldora sticky con "Ver"), se despliega al llegar al final o al tocarlo; chips contextuales. "Repetir este envío" entra al Bizum conversacional ya relleno (`via=movimiento`).
 - Entradas: enlace del insight de Inicio, filas Nike/Bizum de Mi dinero y Cuenta, "Ver movimiento" tras el Bizum por formulario.
+
+## V7.15 — Tarjetas (del proto original)
+`/tarjetas/debito` pasa a ser la página **Tarjetas** del original, adaptada:
+- Carrusel con deslizamiento (Débito ···· 5566 y Crédito ···· 2209), puntos y flechas.
+- **Interruptor en la tarjeta**: apagar es inmediato (la tarjeta se encoge y aparece la franja "Apagada"); encender pide Face ID. Si en el escenario de fraude se bloqueó, aparece "Bloqueada por seguridad".
+- Pill "Límites de compras y cajero · Modificar" y acción **Configurar límites**: hoja con deslizadores (compras/mes, cajero/día) y permisos (internet, extranjero). Bajar/desactivar = al momento; subir/activar = **firma** con el mismo deslizador del Bizum.
+- **Mostrar PIN**: Face ID → PIN 15 s con cuenta atrás; "Cambiar PIN" va al asistente.
+- Añadir a Cartera de Apple; resumen "Gastado este mes" (débito, cuadra con los 326,80 € de Inicio) o Disponible/Gastado + liquidación (crédito).
+- Movimientos: pestañas Todos/Fraccionar (>50 €), buscador, agrupados, esqueleto de carga al cambiar de tarjeta. Cada movimiento abre su detalle (`/movimientos/nike` o `/movimientos/tarjeta`).
+- "Límites de tarjeta" (atajo de Inicio y sheet de Operar) abre Tarjetas con la hoja de límites.
+- Sin función en la prueba: Instant money, Más opciones, Forma de pago, Cartera de Apple.
