@@ -649,3 +649,23 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:none;box
 .nav-operar:hover{background:#005fe0}.nav-operar:active{transform:scale(.94)}
 .nav-operar-dots{display:grid;grid-template-columns:repeat(3,3.6px);gap:2.4px}
 .nav-operar-dots i{width:3.6px;height:3.6px;border-radius:50%;background:#fff;display:block}
+/* V7.11 Operar: bottom sheet + botón X */
+.oper-layer{position:absolute;left:0;right:0;top:0;bottom:80px;z-index:4;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+.oper-scrim{position:absolute;inset:0;background:rgba(0,0,0,.45);animation:oper-fade .22s ease both;padding:0}
+.oper-sheet{position:relative;background:#fff;border-radius:16px 16px 0 0;padding:20px 8px 12px;animation:oper-up .3s cubic-bezier(.4,0,.2,1) both;max-height:100%;overflow:auto}
+.oper-head{display:flex;justify-content:space-between;align-items:baseline;padding:0 16px 6px}
+.oper-head h2{margin:0;font-size:18px;line-height:27px;font-weight:600;color:#000}
+.oper-head2{margin-top:14px}
+.oper-all{background:transparent;color:#0163e8;font-size:18px;line-height:27px;padding:0}
+.oper-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px 0;padding:10px 4px}
+.oper-cell{display:flex;flex-direction:column;align-items:center;gap:8px;background:transparent;padding:4px 2px;color:#000}
+.oper-circle{width:44px;height:44px;border-radius:50%;border:1px solid #006dff;display:grid;place-items:center}
+.oper-label{font-size:12px;line-height:16px;text-align:center;word-break:break-word}
+.nav-operar-x{display:none;position:relative;width:24px;height:24px}
+.nav-operar-x:before,.nav-operar-x:after{content:"";position:absolute;left:-2px;top:11px;width:28px;height:1.6px;background:#fff;border-radius:1px}
+.nav-operar-x:before{transform:rotate(45deg)}.nav-operar-x:after{transform:rotate(-45deg)}
+.nav-operar.is-open .nav-operar-dots{display:none}.nav-operar.is-open .nav-operar-x{display:block}
+@keyframes oper-up{from{transform:translateY(100%)}to{transform:none}}
+@keyframes oper-fade{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.oper-sheet,.oper-scrim{animation:none}}
+.bottomnav{position:relative;z-index:5;background:#fff}

@@ -194,3 +194,7 @@ El Bizum deja de ser un formulario dentro del chat: una pregunta por turno, se s
 - Barra inferior: Inicio | botón central Operar (círculo azul 56 px con rejilla de 9 puntos) | Contratar. Sin etiqueta en Operar.
 - Operar lleva a `/operar` ("¿Qué quieres hacer?"). Solo Inicio y Contratar marcan estado activo.
 - Mi dinero y Productos dejan de ser pestañas: se llega desde Inicio ("Ver todos") y desde el buzón/insights.
+
+## V7.11 — Operar abre bottom sheet
+- El botón Operar abre una sheet con "Principales operativas" (8) y "¿Te podemos ayudar?" (4), iconos del proto original. El botón pasa a X y cierra; también cierra el scrim.
+- Funcionales: Enviar Bizum (chat), Enviar dinero, Consultar domiciliaciones, Límites/Bloquear tarjeta, Centro de ayuda/FAQ. El resto muestra "no disponible en la prueba". "Ver todas" → `/operar`.
