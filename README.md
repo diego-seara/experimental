@@ -286,3 +286,6 @@ Rastreo automático de todas las rutas y botones (sin errores de JS; los "sin ef
 - **Cuentas y Tarjetas** recuperan la barra inferior (como Tus productos); "Sacar dinero" de Cuentas vuelve a abrir Operar.
 - **Fraude**: el pago retenido de 349 € aparece en los movimientos de la débito (no suma al gasto) y abre la revisión.
 - El asistente de seguridad sabe si la tarjeta está apagada. "Ver tarjeta" del aviso de bloqueo abre Tarjetas. "Cuenta Ahorro" con mayúscula en todo el proto.
+
+## V7.25 — Carruseles con arrastre de ratón
+- Te puede interesar, Contratar, Cuentas y Tarjetas se pueden arrastrar con el ratón (escritorio / UserZoom), con inercia y encaje en la tarjeta más cercana; el táctil sigue siendo nativo. Un arrastre no cuenta como clic; los clics normales siguen funcionando.

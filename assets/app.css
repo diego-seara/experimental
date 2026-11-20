@@ -1266,3 +1266,8 @@ div.acc-row:hover{background:#fff}
 @media(prefers-reduced-motion:reduce){.tf-res-av i{animation:none}}
 .bzf-contact.is-off{opacity:.55;cursor:default}.bzf-contact.is-off:hover{background:#fff}
 .cm-tag.held{color:#c62828;border-color:#f1a7a7;background:#fff5f5}.cm-held{background:#fffafa}
+/* V7.25 arrastre con ratón */
+@media (hover:hover) and (pointer:fine){.promo-scroll,.contract-reco,.cards-car,.acc-car{cursor:grab}}
+.is-dragging{cursor:grabbing!important;scroll-snap-type:none!important;scroll-behavior:auto!important;user-select:none}
+.is-dragging *{pointer-events:none}
+.promo-scroll img,.contract-reco img{-webkit-user-drag:none;user-select:none}
