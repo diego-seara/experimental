@@ -1199,3 +1199,18 @@ div.acc-row:hover{background:#fff}
 .pp-offer{margin-top:10px;width:100%;text-align:left;background:#fff;border:1px dashed #9cc3ad;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:4px;color:#000}
 .pp-offer small{color:#646464;font-size:12.5px}
 .pp-more{padding-bottom:24px}.pp-more .ct-row{border:1px solid #e0e0e0;border-radius:16px;margin-top:6px}
+/* V7.20 Zona conversacional (gris) vs zona operativa (blanco) */
+.home-v2 .context-panel{padding-bottom:26px}
+.home-v2 .hello{margin-bottom:6px}
+.home-v2 .hero-insight.last-move{margin:0 0 20px}
+.home-v2 .hero-insight.last-move p{font-size:16px;line-height:26px;color:#424242}
+.home-v2 .hero-insight.last-move .move-link{color:#000}
+.home-v2 .hero-insight.warn,.home-v2 .hero-insight.danger{margin-bottom:20px}
+.home-v2 .home-ask{margin:0!important}
+.ops-panel{background:#fff;padding:20px 22px 4px}
+.ops-panel .home-quick{margin:0 -8px}
+.home-v2 .products-panel{padding-top:20px}
+/* carruseles: que no peguen al borde */
+.promo-scroll,.contract-reco{scroll-padding-inline:16px}
+.promo-scroll>*:first-child,.contract-reco>*:first-child{margin-left:0}
+.promo-scroll::after,.contract-reco::after{content:"";flex:0 0 1px}

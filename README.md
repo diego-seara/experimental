@@ -259,3 +259,8 @@ Todo con el mismo motor que el Bizum conversacional (guion por pasos, chips, tex
 - **Contratar** (original): "Laura, esto te puede interesar" (Cuenta para menores, 50 € de cashback), Nuestros productos (7, Ahorro e inversión con "Novedad"), "¿No encuentras lo que buscas?" (Ir al chat → `/conversacion/contratar`; Llamar → persona con el motivo).
 - **Fichas de producto** `/contratar/{prestamos|tarjetas|cuentas|hipotecas|ahorro|seguros|autorenting}`: catálogo del original, pero coherente con Laura: BS Card y Classic salen como "Ya la tienes" (abren su tarjeta en el carrusel), la Cuenta Online y la Cuenta Ahorro también; en hipotecas aparece SU hipoteca en lugar de una preconcedida; el préstamo preconcedido es el de nuestro flujo (12.000 €) o el préstamo contratado.
 - **Tus productos** (`/productos`), conciliado: saldo total y gasto con tarjetas; Cuentas (2) con saldos reales; Tarjetas (2) con gasto del mes, disponible de la crédito y estado Apagada/Bloqueada; Hipoteca (pendiente y cuota) y préstamo/preconcedido. Cada fila abre su página (la tarjeta correcta en el carrusel).
+
+## V7.20 — Inicio: zona conversacional vs zona operativa
+- Gris = conversación: saludo → insight (el asistente te recibe) → caja con resplandor para contestarle.
+- Blanco = operativa: atajos → Tus productos → Te puede interesar.
+- Carruseles de Inicio y Contratar con 16 px de margen a ambos lados también al deslizar (scroll-padding).
