@@ -198,3 +198,11 @@ El Bizum deja de ser un formulario dentro del chat: una pregunta por turno, se s
 ## V7.11 — Operar abre bottom sheet
 - El botón Operar abre una sheet con "Principales operativas" (8) y "¿Te podemos ayudar?" (4), iconos del proto original. El botón pasa a X y cierra; también cierra el scrim.
 - Funcionales: Enviar Bizum (chat), Enviar dinero, Consultar domiciliaciones, Límites/Bloquear tarjeta, Centro de ayuda/FAQ. El resto muestra "no disponible en la prueba". "Ver todas" → `/operar`.
+
+## V7.12 — Bizum por formulario desde Operar
+- Operar → "Enviar Bizum" (sheet y página `/operar`) abre el **formulario** del proto original, no el chat. Rutas propias para medir por separado en UserZoom:
+  - `/operar/bizum` → datos (móvil + Agenda, importe, concepto opcional; validación de móvil, saldo y límite de 1.000 €)
+  - `/operar/bizum/revision` → revisión ("Pendiente de firma") + **drawer de firma** (pulsar → deslizar → verificando 1 s → OK verde)
+  - `/operar/bizum/enviado` → confirmación (Ver movimiento / Hacer otro Bizum / Ir a Inicio)
+- `via=operar` en las tres URLs. El conversacional sigue en `/bizum/…` (caja, pills, chat).
+- El Bizum enviado por formulario descuenta saldo y aparece en movimientos igual que el conversacional.

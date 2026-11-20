@@ -34,6 +34,18 @@
       "destination": "/pages/operar.html"
     },
     {
+      "source": "/operar/bizum",
+      "destination": "/pages/operar-bizum.html"
+    },
+    {
+      "source": "/operar/bizum/revision",
+      "destination": "/pages/operar-bizum-revision.html"
+    },
+    {
+      "source": "/operar/bizum/enviado",
+      "destination": "/pages/operar-bizum-enviado.html"
+    },
+    {
       "source": "/perfil",
       "destination": "/pages/perfil.html"
     },
