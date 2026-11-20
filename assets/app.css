@@ -1224,3 +1224,44 @@ div.acc-row:hover{background:#fff}
 .ins-body .insight-indicator{display:none}
 .ins-assist:has(.warn) .assistant-disc{box-shadow:0 0 0 2px #fafafa,0 0 0 4px #f0a500}
 .ins-assist:has(.danger) .assistant-disc{box-shadow:0 0 0 2px #fafafa,0 0 0 4px #c62828}
+/* V7.22 Transferencia por formulario */
+.tf-group{display:flex;flex-direction:column;gap:8px}
+.tf-label{font-size:14px;font-weight:600}
+.tf-acc{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:1px solid #e0e0e0;border-radius:14px;padding:14px;background:#fff;color:#000;transition:border-color .15s,background-color .15s}
+.tf-acc.on{border-color:#006dff;background:#f0f6ff;box-shadow:0 1px 6px rgba(0,109,255,.1)}
+.tf-radio{width:20px;height:20px;border-radius:50%;border:1px solid #919191;flex:none;display:grid;place-items:center;background:#fff}
+.tf-acc.on .tf-radio{border-color:#006dff;background:#006dff}.tf-acc.on .tf-radio:after{content:"";width:8px;height:8px;border-radius:50%;background:#fff}
+.tf-acc-n{flex:1;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}.tf-acc-n strong{font-size:15px}.tf-acc-n small{font-size:13px;color:#646464}
+.tf-acc-b{display:flex;flex-direction:column;align-items:flex-end}.tf-acc-b small{font-size:12px;color:#646464}.tf-acc-b strong{font-size:15px}
+.tf-chips{display:flex;flex-wrap:wrap;gap:8px}
+.tf-chip{border:1px solid #bdbdbd;border-radius:18px;padding:7px 14px;background:#fff;font-size:14px;color:#000}
+.tf-chip.on{background:#000;color:#fff;border-color:#000}
+.tf-vop{display:inline-flex;gap:6px;align-items:flex-start;font-size:13px;line-height:18px;color:#646464}
+.tf-vop svg{flex:none;margin-top:2px}
+.tf-vop.match{color:#0b7a4b}.tf-vop.close{color:#8a5a00}.tf-vop.no_match{color:#c62828}
+.tf-vop.busy .esc-spin{width:14px;height:14px}
+.tf-bank{color:#000!important;font-weight:600}
+.tf-small{font-size:13px;font-weight:600;color:#646464}
+.tf-result{display:flex;gap:12px;align-items:center}
+.tf-res-ic{width:40px;height:40px;border-radius:50%;background:#16a34a;color:#fff;display:grid;place-items:center;flex:none;animation:bzf-pop .45s cubic-bezier(.34,1.56,.64,1) both}
+.tf-info{display:flex;gap:6px;align-items:flex-start;margin:0;font-size:13px;line-height:18px;color:#0050c8;background:#f0f6ff;border-radius:10px;padding:9px 11px}
+.tf-info svg{flex:none;margin-top:2px}
+.tf-fail{background:#fff;display:flex;flex-direction:column;justify-content:space-between}
+.tf-fail-c{padding:96px 40px 32px}
+.tf-fail-ic{width:44px;height:44px;border-radius:50%;background:#c62828;color:#fff;display:grid;place-items:center}
+.tf-fail-c h1{margin:24px 0 8px;font-size:20px;line-height:26px;font-weight:600}
+.tf-fail-c p{margin:0;font-size:16px;line-height:24px;color:#646464}
+.tf-rescue{position:sticky;bottom:12px;margin:0 16px 16px;display:flex;gap:12px;align-items:flex-start;text-align:left;background:#fff;border:1px solid #cfe2ff;border-radius:22px;padding:14px 16px;box-shadow:0 14px 32px -4px rgba(0,45,114,.24),0 4px 12px rgba(0,0,0,.08);animation:mv-ask-in .45s cubic-bezier(.22,1,.36,1) .35s both;color:#000}
+.tf-rescue:hover{border-color:#8fb8ff}
+.tf-res-av{position:relative;width:34px;height:34px;flex:none;display:grid;place-items:center;margin-top:2px}
+.tf-res-av i{position:absolute;inset:0;border-radius:50%;background:#006dff;animation:tf-pulse 3.6s ease-in-out infinite}
+.tf-res-av .assistant-disc{position:relative;width:34px;height:34px}
+@keyframes tf-pulse{0%,100%{transform:scale(.95);opacity:.26}50%{transform:scale(1.36);opacity:0}}
+.tf-res-t{flex:1;display:flex;flex-direction:column;gap:3px}
+.tf-res-h{display:flex;justify-content:space-between;align-items:center;gap:8px}.tf-res-h strong{font-size:15px}
+.tf-res-h em{font-style:normal;font-size:12.5px;font-weight:600;color:#006dff;background:#f0f6ff;border-radius:12px;padding:3px 10px}
+.tf-res-m{font-size:13.5px;line-height:19px;color:#262626}
+.tf-fail-foot{padding:16px;background:#fff;border-top:1px solid #eee}.tf-fail-foot .button-primary{margin:0}
+.tf-new .bzf-cav{background:#eef4ff;color:#006dff}
+@media(prefers-reduced-motion:reduce){.tf-res-av i{animation:none}}
+.bzf-contact.is-off{opacity:.55;cursor:default}.bzf-contact.is-off:hover{background:#fff}

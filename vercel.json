@@ -62,6 +62,22 @@
       "destination": "/pages/operar.html"
     },
     {
+      "source": "/operar/transferencia",
+      "destination": "/pages/operar-transferencia.html"
+    },
+    {
+      "source": "/operar/transferencia/revision",
+      "destination": "/pages/operar-transferencia-revision.html"
+    },
+    {
+      "source": "/operar/transferencia/enviada",
+      "destination": "/pages/operar-transferencia-enviada.html"
+    },
+    {
+      "source": "/operar/transferencia/no-realizada",
+      "destination": "/pages/operar-transferencia-no-realizada.html"
+    },
+    {
       "source": "/movimientos/nike",
       "destination": "/pages/movimientos-nike.html"
     },

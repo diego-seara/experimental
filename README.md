@@ -267,3 +267,14 @@ Todo con el mismo motor que el Bizum conversacional (guion por pasos, chips, tex
 
 ## V7.21 — El insight habla con la voz del asistente
 - Disco del asistente junto al insight de Inicio (último movimiento, luz, fraude). En luz/fraude el aviso de gravedad pasa a un anillo ámbar/rojo alrededor del disco (sin punto duplicado).
+
+## V7.22 — Transferencia por formulario (del proto original)
+- Atajos → formulario: "Transferencia nacional" (Inicio, `via=atajo`), "Enviar dinero" (sheet y página de Operar, `via=operar`; Mi dinero) y Cuentas (`via=cuentas`, con la cuenta mostrada como origen). La caja y el chat siguen yendo a la conversacional.
+- `/operar/transferencia` → `/revision` → `/enviada` (o `/no-realizada`). Cuenta de origen (Online/Ahorro con saldo), destinatario + Agenda, IBAN (autocompleta, banco detectado, dígito de control), importe ("te quedarán…"), concepto, tipo (Inmediata/Ordinaria, 0 €).
+- **Verificación del titular (VOP)** al escribir: verificado / casi coincide / no coincide.
+- Firma con deslizador. **Límite diario de 600 € por cuenta** (transferencias a terceros, compartido con la conversacional): si se supera, la firma acaba en "Lo sentimos, algo no ha ido bien" con el **asistente flotante de rescate** → abre la transferencia conversacional con los mismos datos, que ofrece **subir el límite hoy** (firmado) o enviar lo que queda.
+- Saldos, movimientos (Online y Ahorro) e insight de Inicio se actualizan con cualquier origen/destino.
+
+## V7.23 — Bizum conversacional: agenda del móvil
+- Si el nombre no está entre los contactos de Bizum: "Indícame su número de móvil o búscalo en tu agenda" + atajo **"Buscar a X en la agenda"** (la búsqueda llega ya rellenada) y "Es otra persona".
+- Agenda: contactos con Bizum (seleccionables), sin Bizum (desactivados) y **Nuevo contacto** (vuelve al chat para escribir el móvil). Nueva contacto de ejemplo: Amalia Vidal.
