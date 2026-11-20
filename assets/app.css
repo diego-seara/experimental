@@ -642,3 +642,10 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:none;box
 .bt-send[disabled]{opacity:.85;cursor:progress}
 .bt-spin{width:16px;height:16px;border:2px solid #ffffff80;border-top-color:#fff;border-radius:50%;animation:btspin .7s linear infinite}
 @keyframes btspin{to{transform:rotate(360deg)}}
+
+/* V7.10 nav original: Inicio | Operar | Contratar */
+.nav-operar-wrap{flex:none;width:80px;position:relative;display:flex;justify-content:center}
+.nav-operar{position:absolute;top:6px;width:56px;height:56px;border-radius:50%;background:#006dff;display:grid;place-items:center;padding:0;box-shadow:none;transition:transform .15s ease,background-color .15s ease}
+.nav-operar:hover{background:#005fe0}.nav-operar:active{transform:scale(.94)}
+.nav-operar-dots{display:grid;grid-template-columns:repeat(3,3.6px);gap:2.4px}
+.nav-operar-dots i{width:3.6px;height:3.6px;border-radius:50%;background:#fff;display:block}

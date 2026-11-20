@@ -189,3 +189,8 @@ El Bizum deja de ser un formulario dentro del chat: una pregunta por turno, se s
 - **El Bizum deja huella:** al enviarlo baja el saldo de la Cuenta Online y el total, y el movimiento («Bizum a Marta AMPA cole · Hoy · Cuota AMPA») aparece en Mi dinero y en la cuenta. El texto del saldo en el chat se calcula, ya no es fijo. Se reinicia al volver al inicio de sesión.
 - **Importes con memoria:** primera respuesta rápida «15 € · como la última vez» (Marta AMPA cole 15 €, Pau Seara 20 €, Mamá 50 €); tras enviar, la última vez pasa a ser lo que acabas de enviar.
 - **Conceptos según la persona:** AMPA (Cuota AMPA, Excursión, Material), Pau (Paga, Cine, Merienda), Mamá (Gracias, Comida, Regalo); resto: Cena, Gracias, Alquiler.
+
+## V7.10 — Nav original con botón Operar
+- Barra inferior: Inicio | botón central Operar (círculo azul 56 px con rejilla de 9 puntos) | Contratar. Sin etiqueta en Operar.
+- Operar lleva a `/operar` ("¿Qué quieres hacer?"). Solo Inicio y Contratar marcan estado activo.
+- Mi dinero y Productos dejan de ser pestañas: se llega desde Inicio ("Ver todos") y desde el buzón/insights.
