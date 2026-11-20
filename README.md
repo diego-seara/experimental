@@ -183,3 +183,9 @@ El Bizum deja de ser un formulario dentro del chat: una pregunta por turno, se s
 - **Sin saldo suficiente:** lo dice en el hilo y ofrece enviar menos o cancelar.
 - **URLs:** `/bizum/datos` (preguntas), `/bizum/revision` (resumen), `/bizum/completado` (recibo). El hilo viaja en la sesión y «atrás» vuelve al origen. `via` no cambia.
 - La transferencia sigue con el formulario anterior.
+
+
+## V7.9 · Realismo del Bizum
+- **El Bizum deja huella:** al enviarlo baja el saldo de la Cuenta Online y el total, y el movimiento («Bizum a Marta AMPA cole · Hoy · Cuota AMPA») aparece en Mi dinero y en la cuenta. El texto del saldo en el chat se calcula, ya no es fijo. Se reinicia al volver al inicio de sesión.
+- **Importes con memoria:** primera respuesta rápida «15 € · como la última vez» (Marta AMPA cole 15 €, Pau Seara 20 €, Mamá 50 €); tras enviar, la última vez pasa a ser lo que acabas de enviar.
+- **Conceptos según la persona:** AMPA (Cuota AMPA, Excursión, Material), Pau (Paga, Cine, Merienda), Mamá (Gracias, Comida, Regalo); resto: Cena, Gracias, Alquiler.

@@ -36,7 +36,8 @@ const movements=[['Mercadona','Hoy · Alimentación',-47.85,'wallet'],['Gasoline
 function money(){
  const warn=state.scenario==='warning', covered=warn&&(state.insight==='covered'||state.coverDone);
  const online=warn?(covered?87:64):3420.5, ahorro=covered?842:865;
- const onl=Math.round((online+(state.loan?state.loan.A:0))*100)/100;
+ const sentBz=(state.bizums||[]).reduce((t,b)=>t+b.amount,0);
+ const onl=Math.round((online+(state.loan?state.loan.A:0)-sentBz)*100)/100;
  return {online:onl,ahorro,total:Math.round((onl+ahorro)*100)/100,card:326.8,luz:87,fibra:55.5,week:142.5,income:1850,bills:1240,warn,covered};
 }
 function status(){return `<div class="statusbar" aria-hidden="true"><span>9:41</span><span class="status-icons"><span class="signal"><i></i><i></i><i></i><i></i></span><span class="wifi"></span><span class="battery"></span></span></div>`}
@@ -70,6 +71,7 @@ function topicText(topic){
  if(topic==='loan')return 'Vimos tu préstamo preaprobado.';
  if(topic==='preapproved')return 'Te expliqué por qué tienes un préstamo preaprobado.';
  const m=money(),ins=state.insight;
+ if(topic==='balance')return `Ahora mismo tienes <strong>${fmt(m.total)}</strong> entre tus dos cuentas. Aquí tienes el detalle.`;
  if(topic==='balance')return `Ahora mismo tienes <strong>${fmt(m.total)}</strong> entre tus dos cuentas. Aquí tienes el detalle.`;
  if(topic==='payments')return `Tienes <strong>2 cargos previstos</strong> durante los próximos siete días, por un total de <strong>${fmt(m.week)}</strong>.`+(m.warn&&!m.covered?' Con lo que tienes en tu Cuenta Online no llegas a cubrir la luz.':'');
  if(topic==='security'){
@@ -136,7 +138,7 @@ function parseEuros(t){
 function monthsIn(t){const m=normq(t).match(/(\d{1,3})\s*meses|(\d{1,2})\s*anos?/);if(!m)return null;return m[1]?Number(m[1]):Number(m[2])*12}
 function purposeOf(t){const s=normq(t);if(/coche|moto|vehiculo/.test(s))return 'coche';if(/reforma|obra|cocina|bano/.test(s))return 'reforma';if(/imprevist|urgenc|averia|dentista|medic|arreglo/.test(s))return 'imprevisto';if(/viaje|vacacion/.test(s))return 'viaje';if(/estudi|master|curso/.test(s))return 'estudios';return null}
 const PURPOSE_LABEL={coche:'un coche',reforma:'una reforma',imprevisto:'un imprevisto',viaje:'un viaje',estudios:'tus estudios',otro:'lo que necesitas'};
-function movesNow(){return state.loan?[['Préstamo personal','Hoy · Ingreso',state.loan.A,'building'],...movements]:movements}
+function movesNow(){const bz=[...(state.bizums||[])].reverse().map(b=>['Bizum a '+b.who,'Hoy · '+(b.concept||'Bizum'),-b.amount,'phone']);return [...bz,...(state.loan?[['Préstamo personal','Hoy · Ingreso',state.loan.A,'building']]:[]),...movements]}
 const hide=x=>state.balanceVisible?fmt(x):'•••• €';
 function progressBar(p,label){return `<div class="progress" role="img" aria-label="${label}"><span style="width:${Math.min(100,Math.max(0,p)).toFixed(1)}%"></span></div>`}
 
@@ -257,8 +259,9 @@ const SCRIPTS={
 // ── Bizum conversacional (V7.8) ──
 // Una pregunta por turno, se salta lo que ya sabe, las respuestas rápidas son frases y escribir siempre gana a tocar.
 // Cada fase tiene su URL (datos → revisión → completado) pero el hilo viaja en la sesión: se ve como una sola conversación.
-const CONTACTS=[{id:'marta',name:'Marta AMPA cole',full:'Marta AMPA cole',tail:'482',keys:['marta','ampa']},{id:'pau',name:'Pau Seara',full:'Pau Seara',tail:'917',keys:['pau']},{id:'mama',name:'Mamá',full:'Mamá',tail:'305',keys:['mama','madre']}];
-const contactToWho=c=>({name:c.name,full:c.full,tail:c.tail,known:true});
+const CONTACTS=[{id:'marta',name:'Marta AMPA cole',full:'Marta AMPA cole',tail:'482',keys:['marta','ampa'],last:15,concepts:['Cuota AMPA','Excursión','Material']},{id:'pau',name:'Pau Seara',full:'Pau Seara',tail:'917',keys:['pau'],last:20,concepts:['Paga','Cine','Merienda']},{id:'mama',name:'Mamá',full:'Mamá',tail:'305',keys:['mama','madre'],last:50,concepts:['Gracias','Comida','Regalo']}];
+const contactToWho=c=>({name:c.name,full:c.full,tail:c.tail,known:true,last:c.last,concepts:c.concepts});
+const lastTo=w=>{const b=[...(state.bizums||[])].reverse().find(x=>x.who===w.full);return b?b.amount:(w.last||null)};
 function findContact(t){const n=normq(t);return CONTACTS.find(c=>c.keys.some(k=>new RegExp('\\b'+k+'\\b').test(n)))||null}
 function findPhone(t){const d=String(t).replace(/\D/g,'').replace(/^34(?=\d{9}$)/,'');return /^[6-7]\d{8}$/.test(d)?d:null}
 function fmtPhone(d){return d.replace(/(\d{3})(\d{3})(\d{3})/,'$1 $2 $3')}
@@ -278,13 +281,13 @@ const BIZUM_STEPS={start:v=>v.who?nextBizum(v):v.pending?'ask-phone':'ask-who',s
  'other-number':{route:'/bizum/datos',ph:'Nombre o teléfono',numeric:true,say:()=>'Escríbeme su nombre o su teléfono.',chips:()=>[chip('Elegir un contacto',{go:'ask-who',keys:['contacto','elegir']})]},
  'ask-phone':{route:'/bizum/datos',ph:'Teléfono (9 cifras)',numeric:true,say:v=>`No tengo a «${esc(v.pending||'esa persona')}» entre tus contactos de Bizum. Escríbeme su teléfono (9 cifras) y se lo envío.`,chips:()=>[chip('Elegir un contacto',{go:'ask-who',set:{pending:''},keys:['contacto','elegir']})]},
  'ask-amount':{route:'/bizum/datos',ph:'Importe en €',numeric:true,say:v=>`¿Cuánto le envías a ${esc(v.who.name)}?`,
-  chips:v=>[10,20,50].map(a=>chip(a+' €',{go:a>money().online?'no-funds':'confirm',set:{amount:a},keys:[String(a)]}))},
+  chips:v=>{const l=lastTo(v.who),base=[10,20,50].filter(a=>a!==l).slice(0,l?2:3),mk=(a,label)=>chip(label||a+' €',{go:a>money().online?'no-funds':'confirm',set:{amount:a},keys:[String(a)]});return [...(l?[mk(l,l+' € · como la última vez')]:[]),...base.map(a=>mk(a))]}},
  'no-funds':{route:'/bizum/datos',ph:'Importe en €',numeric:true,say:v=>`En tu Cuenta Online tienes <strong>${hide(money().online)}</strong> y quieres enviar ${fmt(v.amount)}. Dime un importe menor, o traspasa antes dinero desde Ahorro.`,
   chips:()=>[chip('Enviar menos',{go:'ask-amount',set:{amount:null},keys:['menos']}),chip('Cancelar',{act:'home',keys:['cancelar','inicio']})]},
  'confirm':{route:'/bizum/revision',ph:'Cambia algo o escribe otra cosa…',say:v=>`Lo tengo: <strong>${fmt(v.amount)}</strong> a <strong>${esc(v.who.name)}</strong> desde tu Cuenta Online.`,panel:(v,isLast)=>bizumTicket(v,isLast,false),
   chips:v=>[chip('Cambiar importe',{go:'ask-amount',set:{amount:null},keys:['importe','cantidad']}),chip('Cambiar destinatario',{go:'ask-who',set:{who:null},keys:['destinatario','persona']}),chip(v.concept?'Cambiar concepto':'Añadir concepto',{go:'ask-concept',keys:['concepto']})]},
  'ask-concept':{route:'/bizum/revision',ph:'Concepto',say:()=>'¿Qué concepto le pongo?',
-  chips:()=>[...['Cena','Gracias','Alquiler'].map(c=>chip(c,{go:'confirm',set:{concept:c},keys:[normq(c)]})),chip('Sin concepto',{go:'confirm',set:{concept:''},keys:['sin','nada']})]},
+  chips:v=>[...((v.who&&v.who.concepts)||['Cena','Gracias','Alquiler']).map(c=>chip(c,{go:'confirm',set:{concept:c},keys:[normq(c).split(' ')[0]]})),chip('Sin concepto',{go:'confirm',set:{concept:''},keys:['sin','nada']})]},
  'sent':{route:'/bizum/completado',ph:'Pregunta o pide otra cosa…',say:v=>`Hecho. <strong>${esc(v.who.name)}</strong> ya lo tiene.`,panel:v=>bizumTicket(v,true,true),
   chips:()=>[chip('Enviar otro Bizum',{act:'bizum-again',keys:['otro','bizum']}),chip('Ver mi cuenta',{act:'goto-account',keys:['cuenta','movimiento']}),chip('Volver al inicio',{act:'home',keys:['inicio','volver']})]}
 }};
@@ -479,7 +482,7 @@ let saved={};
 try {saved=JSON.parse(sessionStorage.getItem(RS_KEY)||'{}')||{};}catch(err){saved={};}
 if(!saved.form||typeof saved.form!=='object')saved.form={};
 const defaultForm={recipient:'',iban:'',amount:'',concept:''};
-const baseState={sim:{amort:'2000',mode:'cuota',loanAmount:'6000',loanMonths:60,purpose:'',secci:false},loan:null,amortDone:null,offerDismissed:false,script:null,scriptTyping:false,via:'',history:[],trail:[],screen:'home',topic:'',text:'',query:'',chatText:'',balanceVisible:true,stage:'form',form:{...defaultForm},formError:'',toast:'',detail:'account',contract:'cuenta',priorScreen:'home',insight:'ok',scenario:'ok',coverDone:false,blockDone:false,mailRead:false,mailOpen:false};
+const baseState={sim:{amort:'2000',mode:'cuota',loanAmount:'6000',loanMonths:60,purpose:'',secci:false},loan:null,bizums:[],amortDone:null,offerDismissed:false,script:null,scriptTyping:false,via:'',history:[],trail:[],screen:'home',topic:'',text:'',query:'',chatText:'',balanceVisible:true,stage:'form',form:{...defaultForm},formError:'',toast:'',detail:'account',contract:'cuenta',priorScreen:'home',insight:'ok',scenario:'ok',coverDone:false,blockDone:false,mailRead:false,mailOpen:false};
 if(ROUTE_PATH==='/'||ROUTE_PATH==='/splash'){
   saved={};
   try {sessionStorage.removeItem(RS_KEY);}catch(err){}
@@ -684,7 +687,7 @@ function handleAct(a){
  if(a==='loan-edit'){NEXT_DIR='back';goto('/prestamo');return;}
  if(a==='loan-ask'){const A=parseAmount(state.sim.loanAmount)||6000;journey('loan',`Tengo dudas con ${fmt(A).replace(',00','')} a ${state.sim.loanMonths} meses`);return;}
  if(a==='loan-dismiss'){state.offerDismissed=true;state.toast='No volveremos a mostrarte esta oferta en Productos.';NEXT_DIR='back';goto('/productos');return;}
- if(a==='bizum-send'){const sc=state.script;if(!sc||sc.id!=='bizum'||sc.step!=='confirm'||sc.sending)return;sc.sending=true;renderChat();window.setTimeout(()=>{sc.sending=false;scriptPushBot('sent');NEXT_DIR='fade';goto('/bizum/completado');},prefersReducedMotion?0:900);return;}
+ if(a==='bizum-send'){const sc=state.script;if(!sc||sc.id!=='bizum'||sc.step!=='confirm'||sc.sending)return;sc.sending=true;renderChat();window.setTimeout(()=>{sc.sending=false;state.bizums=[...(state.bizums||[]),{who:sc.v.who.full,amount:sc.v.amount,concept:sc.v.concept||''}];scriptPushBot('sent');NEXT_DIR='fade';goto('/bizum/completado');},prefersReducedMotion?0:900);return;}
  if(a.startsWith('fill-')){const t=a.slice(5);state.query=PILL_TEXT[t]||'';state.pillFill=state.query;state.toast='';render();const ta=root.querySelector('#home-prompt');if(ta){ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);}return;}
  if(a.startsWith('journey-')){journey(a.slice(8));return;}
  if(a.startsWith('nav-')){let t=a.slice(4);navigate(t==='operar'?'operations':t);return;}
