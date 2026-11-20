@@ -253,3 +253,9 @@ Todo con el mismo motor que el Bizum conversacional (guion por pasos, chips, tex
 ## V7.18 — Caja conversacional arriba, con resplandor
 - En Inicio la caja "Pregúntanos o pídenos algo…" sube junto al saludo; debajo, el insight de último movimiento, los atajos y Tus productos. Desaparece la caja de abajo.
 - Resplandor sutil: aro con degradado de marca (azul, violeta, cian, rosa) que gira muy despacio + halo difuminado; al enfocar se intensifica. Estático con "reducir movimiento".
+
+## V7.19 — Te puede interesar, Contratar y Tus productos
+- **Te puede interesar** (Inicio, bajo Tus productos), del proto original: carrusel de tarjetas pequeñas (La cuenta que necesitas, Seguros de vida) y de tarjetas grandes con imagen (Seguro Blink Hogar · Novedad, Renting de coches, Cuenta Sabadell Primera), con puntos. Llevan a la ficha del producto en Contratar.
+- **Contratar** (original): "Laura, esto te puede interesar" (Cuenta para menores, 50 € de cashback), Nuestros productos (7, Ahorro e inversión con "Novedad"), "¿No encuentras lo que buscas?" (Ir al chat → `/conversacion/contratar`; Llamar → persona con el motivo).
+- **Fichas de producto** `/contratar/{prestamos|tarjetas|cuentas|hipotecas|ahorro|seguros|autorenting}`: catálogo del original, pero coherente con Laura: BS Card y Classic salen como "Ya la tienes" (abren su tarjeta en el carrusel), la Cuenta Online y la Cuenta Ahorro también; en hipotecas aparece SU hipoteca en lugar de una preconcedida; el préstamo preconcedido es el de nuestro flujo (12.000 €) o el préstamo contratado.
+- **Tus productos** (`/productos`), conciliado: saldo total y gasto con tarjetas; Cuentas (2) con saldos reales; Tarjetas (2) con gasto del mes, disponible de la crédito y estado Apagada/Bloqueada; Hipoteca (pendiente y cuota) y préstamo/preconcedido. Cada fila abre su página (la tarjeta correcta en el carrusel).

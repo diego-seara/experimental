@@ -30,6 +30,34 @@
       "destination": "/pages/contratar.html"
     },
     {
+      "source": "/contratar/cuentas",
+      "destination": "/pages/contratar-cuentas.html"
+    },
+    {
+      "source": "/contratar/tarjetas",
+      "destination": "/pages/contratar-tarjetas.html"
+    },
+    {
+      "source": "/contratar/prestamos",
+      "destination": "/pages/contratar-prestamos.html"
+    },
+    {
+      "source": "/contratar/hipotecas",
+      "destination": "/pages/contratar-hipotecas.html"
+    },
+    {
+      "source": "/contratar/seguros",
+      "destination": "/pages/contratar-seguros.html"
+    },
+    {
+      "source": "/contratar/autorenting",
+      "destination": "/pages/contratar-autorenting.html"
+    },
+    {
+      "source": "/conversacion/contratar",
+      "destination": "/pages/conversacion-contratar.html"
+    },
+    {
       "source": "/operar",
       "destination": "/pages/operar.html"
     },
