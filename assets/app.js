@@ -3,7 +3,7 @@
 // · ?embed=1 (o servido bajo /proto-d/) → embebido; se recuerda en la sesión.
 // · ?nombre= y ?apellidos= fijan la persona elegida en la bienvenida del original (por defecto Laura Giménez Soler).
 const EMB_QS=new URLSearchParams(location.search);
-const EMBED=(()=>{const on=EMB_QS.get('embed')==='1'||/\/proto-d\//.test(location.pathname)||window.self!==window.top;try{if(on)sessionStorage.setItem('bs-d-embed','1');return sessionStorage.getItem('bs-d-embed')==='1';}catch(e){return on;}})();
+const EMBED=(()=>{const on=EMB_QS.get('embed')==='1'||/\/proto-d\//.test(location.pathname);try{if(on)sessionStorage.setItem('bs-d-embed','1');return sessionStorage.getItem('bs-d-embed')==='1';}catch(e){return on;}})();
 const USER=(()=>{const cap=x=>String(x||'').trim().replace(/\s+/g,' ').replace(/[<>&"`$\\]/g,'').slice(0,30);let u={first:'Laura',sur:'Giménez Soler'};try{const st=JSON.parse(sessionStorage.getItem('bs-d-user')||'null');if(st&&st.first)u=st;}catch(e){}if(cap(EMB_QS.get('nombre')))u={first:cap(EMB_QS.get('nombre')),sur:cap(EMB_QS.get('apellidos'))||u.sur};try{sessionStorage.setItem('bs-d-user',JSON.stringify(u));}catch(e){}return u;})();
 const UNAME=USER.first,UFULL=(USER.first+' '+USER.sur).trim();
 if(EMBED)document.documentElement.classList.add('is-embed');

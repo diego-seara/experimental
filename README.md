@@ -291,7 +291,7 @@ Rastreo automático de todas las rutas y botones (sin errores de JS; los "sin ef
 - Te puede interesar, Contratar, Cuentas y Tarjetas se pueden arrastrar con el ratón (escritorio / UserZoom), con inercia y encaje en la tarjeta más cercana; el táctil sigue siendo nativo. Un arrastre no cuenta como clic; los clics normales siguen funcionando.
 
 ## V7.26 · Modo embebido (Prototipo D)
-- `?embed=1` (o detectar iframe) activa el modo embebido y se recuerda en la sesión.
+- `?embed=1` (solo con el parámetro, no por estar en un iframe) activa el modo embebido y se recuerda en la sesión.
 - `?nombre=` y `?apellidos=` personalizan saludo, titular de la cuenta, agente y perfil (por defecto Laura Giménez Soler).
 - En Perfil aparece «Cerrar sesión» → `postMessage({type:'proto-d:logout'})` al prototipo padre para volver a la bienvenida.
 
