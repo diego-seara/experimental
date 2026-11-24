@@ -1271,3 +1271,7 @@ div.acc-row:hover{background:#fff}
 .is-dragging{cursor:grabbing!important;scroll-snap-type:none!important;scroll-behavior:auto!important;user-select:none}
 .is-dragging *{pointer-events:none}
 .promo-scroll img,.contract-reco img{-webkit-user-drag:none;user-select:none}
+
+/* V7.26 · Modo embebido: dentro del marco de 393px del original, sin escenario ni sombras de escritorio */
+html.is-embed,html.is-embed body{background:#fff}
+html.is-embed .proto-exit .row-title{color:#b42318}
