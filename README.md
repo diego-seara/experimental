@@ -294,3 +294,9 @@ Rastreo automático de todas las rutas y botones (sin errores de JS; los "sin ef
 - `?embed=1` (o detectar iframe) activa el modo embebido y se recuerda en la sesión.
 - `?nombre=` y `?apellidos=` personalizan saludo, titular de la cuenta, agente y perfil (por defecto Laura Giménez Soler).
 - En Perfil aparece «Cerrar sesión» → `postMessage({type:'proto-d:logout'})` al prototipo padre para volver a la bienvenida.
+
+## V7.27 · Tarea Mercadona («¿Cuánto te gastaste en Mercadona esta semana?»)
+- Hoy = viernes 20 nov; esta semana = 16–20 nov (Netflix del 15 pasa a «Semana pasada»).
+- `?mercadona=1` (por defecto): una compra esta semana (ayer, 47,85 €). `?mercadona=2`: dos compras (47,85 + 23,40 = 71,25 €). En ambas, trampa el 11 nov (38,10 €). Se recuerda en la sesión.
+- Chat: intención `grocery` (Mercadona, súper, la compra, Dia, otros súper sin compras) → `/conversacion/movimientos?paso=show|none`; filas tocables al detalle, «¿Y la semana pasada?», «Todo el súper este mes», «Ver en tu cuenta» (abre Cuenta Online con la búsqueda hecha).
+- Detalle de cualquier compra de Mercadona: `/movimientos/mercadona` (URL de éxito para el camino por la cuenta).

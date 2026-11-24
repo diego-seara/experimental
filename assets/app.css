@@ -1275,3 +1275,9 @@ div.acc-row:hover{background:#fff}
 /* V7.26 · Modo embebido: dentro del marco de 393px del original, sin escenario ni sombras de escritorio */
 html.is-embed,html.is-embed body{background:#fff}
 html.is-embed .proto-exit .row-title{color:#b42318}
+/* V7.27 · Filas de movimiento tocables en la respuesta del chat */
+.gr-row{width:100%;background:none;border-left:0;border-right:0;border-bottom:0;font:inherit;color:inherit;text-align:left;cursor:pointer;display:flex;align-items:center;gap:8px}
+.gr-row strong{margin-left:auto}
+.gr-row svg{color:#9aa3ad;flex:none}
+.gr-row:active{background:#f3f6fa}
+.gr-row strong{white-space:nowrap}

@@ -6,6 +6,14 @@
       "destination": "/pages/splash.html"
     },
     {
+      "source": "/conversacion/movimientos",
+      "destination": "/pages/conversacion-movimientos.html"
+    },
+    {
+      "source": "/movimientos/mercadona",
+      "destination": "/pages/movimientos-mercadona.html"
+    },
+    {
       "source": "/splash",
       "destination": "/pages/splash.html"
     },
